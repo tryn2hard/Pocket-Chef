@@ -5,49 +5,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.robot.pocket_chef.RecipeFragment.OnListFragmentInteractionListener;
-import com.example.robot.pocket_chef.dummy.DummyContent.DummyItem;
+import com.example.robot.pocket_chef.dummy.DummyContent;
+import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link Recipes} and makes a call to the
+
  * TODO: Replace the implementation with code for your data type.
  */
-public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
+public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<RecipeDetailRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Recipes> mValues;
 
-    public RecipeRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    private final DetailAdapterOnClickHandler mClickHandler;
+
+
+    public RecipeDetailRecyclerViewAdapter(List<DummyContent.Recipes> items, DetailAdapterOnClickHandler clickHandler) {
         mValues = items;
-        mListener = listener;
+        mClickHandler = clickHandler;
+
+    }
+
+    public interface DetailAdapterOnClickHandler {
+        void onClick(int id);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_recipe, parent, false);
-
+                .inflate(R.layout.fragment_recipe_detail, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+
             }
         });
     }
@@ -57,20 +59,28 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final View mView;
+        public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Recipes mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-                      mContentView = (TextView) view.findViewById(R.id.recipe_name);
+            mIdView = (TextView) view.findViewById(R.id.id);
+            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            mClickHandler.onClick(adapterPosition);
         }
     }
 }
