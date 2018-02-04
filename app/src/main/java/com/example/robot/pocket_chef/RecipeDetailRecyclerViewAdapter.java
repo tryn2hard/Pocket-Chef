@@ -16,14 +16,16 @@ import java.util.List;
 
  * TODO: Replace the implementation with code for your data type.
  */
-public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<RecipeDetailRecyclerViewAdapter.ViewHolder> {
+public class RecipeDetailRecyclerViewAdapter extends
+        RecyclerView.Adapter<RecipeDetailRecyclerViewAdapter.ViewHolder> {
 
     private final List<Recipes> mValues;
 
     private final DetailAdapterOnClickHandler mClickHandler;
 
 
-    public RecipeDetailRecyclerViewAdapter(List<DummyContent.Recipes> items, DetailAdapterOnClickHandler clickHandler) {
+    public RecipeDetailRecyclerViewAdapter(List<DummyContent.Recipes> items,
+                                           DetailAdapterOnClickHandler clickHandler) {
         mValues = items;
         mClickHandler = clickHandler;
 
@@ -45,13 +47,6 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recipe
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override
@@ -70,6 +65,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recipe
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
+            view.setOnClickListener(this);
         }
 
         @Override

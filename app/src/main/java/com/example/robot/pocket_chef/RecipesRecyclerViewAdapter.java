@@ -16,14 +16,16 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link Recipes} and makes a call to the
  * TODO: Replace the implementation with code for your data type.
  */
-public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
+public class RecipesRecyclerViewAdapter extends
+        RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
 
     private final List<Recipes> mValues;
 
     private final RecipesAdapterOnClickHandler mClickHandler;
 
 
-    public RecipesRecyclerViewAdapter(List<Recipes> items, RecipesAdapterOnClickHandler clickHandler) {
+    public RecipesRecyclerViewAdapter(List<Recipes> items,
+                                      RecipesAdapterOnClickHandler clickHandler) {
         mValues = items;
         mClickHandler = clickHandler;
 

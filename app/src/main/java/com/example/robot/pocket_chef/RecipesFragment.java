@@ -22,7 +22,8 @@ import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
 
  * interface.
  */
-public class RecipesFragment extends Fragment implements RecipesRecyclerViewAdapter.RecipesAdapterOnClickHandler{
+public class RecipesFragment extends Fragment implements
+        RecipesRecyclerViewAdapter.RecipesAdapterOnClickHandler{
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -54,6 +55,7 @@ public class RecipesFragment extends Fragment implements RecipesRecyclerViewAdap
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
     }
 
     @Override
