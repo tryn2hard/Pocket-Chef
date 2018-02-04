@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.robot.pocket_chef.RecipeFragment.OnListFragmentInteractionListener;
 import com.example.robot.pocket_chef.dummy.DummyContent.DummyItem;
@@ -30,6 +31,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_recipe, parent, false);
+
         return new ViewHolder(view);
     }
 

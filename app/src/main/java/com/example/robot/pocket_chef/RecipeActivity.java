@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.robot.pocket_chef.dummy.DummyContent;
 
@@ -27,6 +28,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
+        Toast.makeText(this, "Clicked" + item, Toast.LENGTH_SHORT).show();
     }
 }
