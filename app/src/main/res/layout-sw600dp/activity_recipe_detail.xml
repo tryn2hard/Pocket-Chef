@@ -32,7 +32,7 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <FrameLayout
-            android:id="@+id/steps_fragment"
+            android:id="@+id/steps_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

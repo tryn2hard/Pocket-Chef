@@ -18,16 +18,6 @@ public class Steps extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
 
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        Fragment stepsFragment = fm.findFragmentById(R.id.steps_fragment);
-
-        if(stepsFragment == null){
-            stepsFragment = new StepsFragment();
-            fm.beginTransaction()
-                    .add(R.id.steps_fragment, stepsFragment)
-                    .commit();
-        }
-
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

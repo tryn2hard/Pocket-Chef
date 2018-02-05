@@ -2,7 +2,7 @@ package com.example.robot.pocket_chef;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -13,19 +13,27 @@ import android.view.MenuItem;
 
 public class RecipeDetail extends AppCompatActivity  {
 
+    private boolean mTwoPane;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        Fragment detailFragment = fm.findFragmentById(R.id.detail_list_fragment);
+        if(findViewById(R.id.pocket_chef_linear_layout) != null){
+            mTwoPane = true;
 
-        if(detailFragment == null){
-            detailFragment = new RecipeDetailFragment();
-            fm.beginTransaction()
-                    .add(R.id.detail_list_fragment, detailFragment)
-                    .commit();
+            if(savedInstanceState == null) {
+
+                // In two-pane mode
+                FragmentManager fm = getSupportFragmentManager();
+
+                StepsFragment stepsFragment = new StepsFragment();
+
+                fm.beginTransaction()
+                        .add(R.id.steps_fragment_container, stepsFragment)
+                        .commit();
+            }
         }
 
         // Show the Up button in the action bar.
