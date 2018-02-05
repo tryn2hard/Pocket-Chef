@@ -19,12 +19,12 @@ public class RecipeDetail extends AppCompatActivity  {
         setContentView(R.layout.activity_recipe_detail);
 
         android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        Fragment detailFragment = fm.findFragmentById(R.id.detail_fragment_container);
+        Fragment detailFragment = fm.findFragmentById(R.id.detail_list_fragment);
 
         if(detailFragment == null){
             detailFragment = new RecipeDetailFragment();
             fm.beginTransaction()
-                    .add(R.id.detail_fragment_container, detailFragment)
+                    .add(R.id.detail_list_fragment, detailFragment)
                     .commit();
         }
 

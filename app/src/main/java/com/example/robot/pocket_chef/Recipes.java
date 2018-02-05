@@ -12,12 +12,12 @@ public class Recipes extends AppCompatActivity {
         setContentView(R.layout.activity_recipes);
 
         android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        Fragment recipeListFragment = fm.findFragmentById(R.id.steps_fragment_container);
+        Fragment recipeListFragment = fm.findFragmentById(R.id.recipe_list_fragment);
 
         if(recipeListFragment == null){
             recipeListFragment = new RecipesFragment();
             fm.beginTransaction()
-                    .add(R.id.steps_fragment_container, recipeListFragment)
+                    .add(R.id.recipe_list_fragment, recipeListFragment)
                     .commit();
         }
     }
