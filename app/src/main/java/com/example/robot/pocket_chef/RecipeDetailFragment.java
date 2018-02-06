@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 
 import com.example.robot.pocket_chef.dummy.DummyContent;
 
+
+
+
 /**
  * A fragment representing a list of Items.
  * interface.
@@ -23,9 +26,12 @@ public class RecipeDetailFragment extends Fragment implements
         RecipeDetailRecyclerViewAdapter.DetailAdapterOnClickHandler{
 
     // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_RECIPE_ID = "recipeId";
+    private static final String TAG = RecipeDetailFragment.class.getSimpleName();
     // TODO: Customize parameters
     private int mColumnCount = 1;
+
+    private int mRecipeId; 
 
 
     /**
@@ -35,22 +41,13 @@ public class RecipeDetailFragment extends Fragment implements
     public RecipeDetailFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static RecipeDetailFragment newInstance(int columnCount) {
-        RecipeDetailFragment fragment = new RecipeDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mRecipeId = getArguments().getInt(ARG_RECIPE_ID);
+            Log.d(TAG, "The value of recipeId is " + mRecipeId);
         }
 
 
@@ -70,7 +67,7 @@ public class RecipeDetailFragment extends Fragment implements
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new RecipeDetailRecyclerViewAdapter(DummyContent.ITEMS, this));
+            recyclerView.setAdapter(new RecipeDetailRecyclerViewAdapter(DummyContent.ITEMS, mRecipeId, this));
         }
         return view;
     }

@@ -25,8 +25,8 @@ import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
 public class RecipesFragment extends Fragment implements
         RecipesRecyclerViewAdapter.RecipesAdapterOnClickHandler{
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
+
+    private final static String TAG = RecipesFragment.class.getName();
     // TODO: Customize parameters
     private int mColumnCount = 2;
 
@@ -38,23 +38,12 @@ public class RecipesFragment extends Fragment implements
     public RecipesFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static RecipesFragment newInstance(int columnCount) {
-        RecipesFragment fragment = new RecipesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
 
     }
 
@@ -79,9 +68,12 @@ public class RecipesFragment extends Fragment implements
 
     @Override
     public void onClick(int id) {
-        Intent recipeDetailIntent = new Intent(getActivity(), RecipeDetail.class);
+        Bundle b = new Bundle();
+        b.putInt("recipeId", id);
+        final Intent recipeDetailIntent = new Intent(getActivity(), RecipeDetail.class);
+        recipeDetailIntent.putExtras(b);
         startActivity(recipeDetailIntent);
-        Toast.makeText(getContext(), "Clicked " + id, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "recipeId is " + id);
     }
 
 

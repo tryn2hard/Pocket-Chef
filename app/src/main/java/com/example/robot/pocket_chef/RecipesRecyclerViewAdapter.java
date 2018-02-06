@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
 
@@ -18,6 +17,8 @@ import java.util.List;
  */
 public class RecipesRecyclerViewAdapter extends
         RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
+
+    private final static String TAG = RecipesAdapterOnClickHandler.class.getSimpleName();
 
     private final List<Recipes> mValues;
 
@@ -46,7 +47,7 @@ public class RecipesRecyclerViewAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mContentView.setText(mValues.get(position).recipeName);
 
     }
 
@@ -74,9 +75,11 @@ public class RecipesRecyclerViewAdapter extends
 
         @Override
         public void onClick(View v) {
+
             int adapterPosition = getAdapterPosition();
             mClickHandler.onClick(adapterPosition);
-            Log.d("adapterOnClick", "Is this working");
+            Log.d(TAG, "Adapter position is = " + adapterPosition);
+
         }
     }
 }

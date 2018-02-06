@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 /**
@@ -13,6 +14,8 @@ import android.view.MenuItem;
 
 public class RecipeDetail extends AppCompatActivity  {
 
+    private final static String TAG = RecipeDetail.class.getSimpleName();
+
     private boolean mTwoPane;
 
     @Override
@@ -20,17 +23,25 @@ public class RecipeDetail extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+        Bundle b = new Bundle();
+        b.putInt("recipeId", getIntent().getIntExtra("recipeId", 1));
+
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        recipeDetailFragment.setArguments(b);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.detail_list_fragment, recipeDetailFragment).commit();
+
         if(findViewById(R.id.pocket_chef_linear_layout) != null){
             mTwoPane = true;
 
             if(savedInstanceState == null) {
 
                 // In two-pane mode
-                FragmentManager fm = getSupportFragmentManager();
 
                 StepsFragment stepsFragment = new StepsFragment();
 
-                fm.beginTransaction()
+                getSupportFragmentManager().beginTransaction()
                         .add(R.id.steps_fragment_container, stepsFragment)
                         .commit();
             }

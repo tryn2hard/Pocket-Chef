@@ -23,11 +23,14 @@ public class RecipeDetailRecyclerViewAdapter extends
 
     private final DetailAdapterOnClickHandler mClickHandler;
 
+    private final int mRecipeId;
 
-    public RecipeDetailRecyclerViewAdapter(List<DummyContent.Recipes> items,
+
+    public RecipeDetailRecyclerViewAdapter(List<DummyContent.Recipes> items, int RecipeId,
                                            DetailAdapterOnClickHandler clickHandler) {
         mValues = items;
         mClickHandler = clickHandler;
+        mRecipeId = RecipeId;
 
     }
 
@@ -46,31 +49,32 @@ public class RecipeDetailRecyclerViewAdapter extends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mRecipeNameView.setText(mValues.get(mRecipeId).steps.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        Recipes selectedRecipe = mValues.get(mRecipeId);
+        return selectedRecipe.steps.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mRecipeNameView;
         public Recipes mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mRecipeNameView = (TextView) view.findViewById(R.id.recipeName);
             view.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mRecipeNameView.getText() + "'";
         }
 
         @Override
