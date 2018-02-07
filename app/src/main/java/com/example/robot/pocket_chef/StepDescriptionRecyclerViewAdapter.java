@@ -6,29 +6,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.robot.pocket_chef.dummy.DummyContent;
-import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
+import com.example.robot.pocket_chef.dummy.DummyContent.Recipe;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Recipes} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Recipe} and makes a call to the
 
  * TODO: Replace the implementation with code for your data type.
  */
-public class RecipeDetailRecyclerViewAdapter extends
-        RecyclerView.Adapter<RecipeDetailRecyclerViewAdapter.ViewHolder> {
+public class StepDescriptionRecyclerViewAdapter extends
+        RecyclerView.Adapter<StepDescriptionRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Recipes> mValues;
+    private final List<Recipe> mRecipes;
 
     private final DetailAdapterOnClickHandler mClickHandler;
 
     private final int mRecipeId;
 
 
-    public RecipeDetailRecyclerViewAdapter(List<DummyContent.Recipes> items, int RecipeId,
-                                           DetailAdapterOnClickHandler clickHandler) {
-        mValues = items;
+    public StepDescriptionRecyclerViewAdapter(List<Recipe> items, int RecipeId,
+                                              DetailAdapterOnClickHandler clickHandler) {
+        mRecipes = items;
         mClickHandler = clickHandler;
         mRecipeId = RecipeId;
 
@@ -41,46 +40,46 @@ public class RecipeDetailRecyclerViewAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_recipe_detail, parent, false);
+                .inflate(R.layout.fragment_step_description, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mRecipeNameView.setText(mValues.get(mRecipeId).stepDescription.get(position));
+        holder.mItem = mRecipes.get(position);
+        holder.mStepNumberView.setText(mRecipes.get(position).id);
+        holder.mStepDescriptionView.setText(mRecipes.get(mRecipeId).stepDescription.get(position));
     }
 
     @Override
     public int getItemCount() {
-        Recipes selectedRecipe = mValues.get(mRecipeId);
+        Recipe selectedRecipe = mRecipes.get(mRecipeId);
         return selectedRecipe.stepDescription.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mRecipeNameView;
-        public Recipes mItem;
+        public final TextView mStepNumberView;
+        public final TextView mStepDescriptionView;
+        public Recipe mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mRecipeNameView = (TextView) view.findViewById(R.id.recipeName);
+            mStepNumberView = (TextView) view.findViewById(R.id.step_number);
+            mStepDescriptionView = (TextView) view.findViewById(R.id.step_description);
             view.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mRecipeNameView.getText() + "'";
+            return super.toString() + " '" + mStepDescriptionView.getText() + "'";
         }
 
         @Override
         public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            mClickHandler.onClick(adapterPosition);
+            int stepDescriptionPos = getAdapterPosition();
+            mClickHandler.onClick(stepDescriptionPos);
         }
     }
 }

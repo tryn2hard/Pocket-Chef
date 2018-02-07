@@ -2,7 +2,6 @@ package com.example.robot.pocket_chef;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -11,22 +10,22 @@ import android.view.MenuItem;
  * Created by Robot on 2/4/2018.
  */
 
-public class Steps extends AppCompatActivity {
+public class StepInstruction extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_steps);
+        setContentView(R.layout.activity_step_instruction);
 
         Bundle b = new Bundle();
-        b.putInt("recipeId", getIntent().getIntExtra("recipeId", 1));
-        b.putInt("descriptionPos", getIntent().getIntExtra("descriptionPos", 1));
+        b.putInt("recipeId", getIntent().getIntExtra("recipeId", -1));
+        b.putInt("descriptionPos", getIntent().getIntExtra("descriptionPos", -1));
 
-        StepsFragment stepFragment = new StepsFragment();
-        stepFragment.setArguments(b);
+        StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
+        stepInstructionFragment.setArguments(b);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.steps_fragment_container, stepFragment).commit();
+                .add(R.id.step_instruction_fragment_container, stepInstructionFragment).commit();
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -45,7 +44,7 @@ public class Steps extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, RecipeDetail.class));
+            navigateUpTo(new Intent(this, StepDescription.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

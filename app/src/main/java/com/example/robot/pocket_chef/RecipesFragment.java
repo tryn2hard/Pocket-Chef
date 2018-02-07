@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.robot.pocket_chef.dummy.DummyContent;
-import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
 
 /**
  * A fragment representing a list of Items.
@@ -27,7 +24,7 @@ public class RecipesFragment extends Fragment implements
 
 
     private final static String TAG = RecipesFragment.class.getName();
-    // TODO: Customize parameters
+
     private int mColumnCount = 2;
 
 
@@ -38,13 +35,9 @@ public class RecipesFragment extends Fragment implements
     public RecipesFragment() {
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -56,11 +49,9 @@ public class RecipesFragment extends Fragment implements
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+
             recyclerView.setAdapter(new RecipesRecyclerViewAdapter(DummyContent.ITEMS, this));
         }
         return view;
@@ -70,7 +61,7 @@ public class RecipesFragment extends Fragment implements
     public void onClick(int id) {
         Bundle b = new Bundle();
         b.putInt("recipeId", id);
-        final Intent recipeDetailIntent = new Intent(getActivity(), RecipeDetail.class);
+        final Intent recipeDetailIntent = new Intent(getActivity(), StepDescription.class);
         recipeDetailIntent.putExtras(b);
         startActivity(recipeDetailIntent);
         Log.d(TAG, "recipeId is " + id);

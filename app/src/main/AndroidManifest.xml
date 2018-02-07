@@ -17,18 +17,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecipeDetail"
+            android:name=".StepDescription"
             android:parentActivityName=".Recipes">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.robot.pocket_chef.Recipes"/>
         </activity>
         <activity
-            android:name=".Steps"
-            android:parentActivityName=".Steps">
+            android:name=".StepInstruction"
+            android:parentActivityName=".StepInstruction">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.robot.pocket_chef.RecipeDetail"/>
+            android:value="com.example.robot.pocket_chef.StepDescription"/>
         </activity>
     </application>
 

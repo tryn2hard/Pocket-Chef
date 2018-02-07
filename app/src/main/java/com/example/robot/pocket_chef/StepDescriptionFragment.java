@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,22 +21,40 @@ import com.example.robot.pocket_chef.dummy.DummyContent;
  * A fragment representing a list of Items.
  * interface.
  */
-public class RecipeDetailFragment extends Fragment implements
-        RecipeDetailRecyclerViewAdapter.DetailAdapterOnClickHandler{
+public class StepDescriptionFragment extends Fragment implements
+        StepDescriptionRecyclerViewAdapter.DetailAdapterOnClickHandler{
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_RECIPE_ID = "recipeId";
-    private static final String TAG = RecipeDetailFragment.class.getSimpleName();
-    // TODO: Customize parameters
+    private static final String TAG = StepDescriptionFragment.class.getSimpleName();
+
     private int mColumnCount = 1;
 
     private int mRecipeId;
+
+    OnDescriptionClickListener mCallback;
+
+    public interface OnDescriptionClickListener {
+        void onDescriptionSelected(int position);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            mCallback = (OnDescriptionClickListener) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException(context.toString()
+            + " must implement OnDescriptionClickListener");
+        }
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RecipeDetailFragment() {
+    public StepDescriptionFragment() {
     }
 
     @Override
@@ -55,30 +72,23 @@ public class RecipeDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recipe_detail_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_step_description_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new RecipeDetailRecyclerViewAdapter(DummyContent.ITEMS, mRecipeId, this));
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            recyclerView.setAdapter(new StepDescriptionRecyclerViewAdapter(DummyContent.ITEMS, mRecipeId, this));
         }
         return view;
     }
 
     @Override
-    public void onClick(int id) {
-        Bundle b = new Bundle();
-        b.putInt("recipeId", mRecipeId);
-        b.putInt("descriptionPos", id);
-        Intent stepsIntent = new Intent(getActivity(), Steps.class);
-        stepsIntent.putExtras(b);
-        startActivity(stepsIntent);
+    public void onClick(int stepDescriptionPos) {
+        mCallback.onDescriptionSelected(stepDescriptionPos);
     }
 
 }

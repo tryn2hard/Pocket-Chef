@@ -4,6 +4,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/detail_list_fragment">
-
+    android:id="@+id/step_description_list_fragment_container">
 </FrameLayout>

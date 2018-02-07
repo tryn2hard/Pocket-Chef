@@ -7,27 +7,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.robot.pocket_chef.dummy.DummyContent.Recipes;
+import com.example.robot.pocket_chef.dummy.DummyContent.Recipe;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Recipes} and makes a call to the
- * TODO: Replace the implementation with code for your data type.
+ * {@link RecyclerView.Adapter} that can display a {@link Recipe} and makes a call to the
  */
 public class RecipesRecyclerViewAdapter extends
         RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
 
     private final static String TAG = RecipesAdapterOnClickHandler.class.getSimpleName();
 
-    private final List<Recipes> mValues;
+    private final List<Recipe> mRecipeList;
 
     private final RecipesAdapterOnClickHandler mClickHandler;
 
 
-    public RecipesRecyclerViewAdapter(List<Recipes> items,
+    public RecipesRecyclerViewAdapter(List<Recipe> items,
                                       RecipesAdapterOnClickHandler clickHandler) {
-        mValues = items;
+        mRecipeList = items;
         mClickHandler = clickHandler;
 
     }
@@ -46,31 +45,31 @@ public class RecipesRecyclerViewAdapter extends
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).recipeName);
+        holder.mItem = mRecipeList.get(position);
+        holder.mRecipeName.setText(mRecipeList.get(position).recipeName);
 
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mRecipeList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final View mView;
-        public final TextView mContentView;
-        public Recipes mItem;
+        public final TextView mRecipeName;
+        public Recipe mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContentView = (TextView) view.findViewById(R.id.recipe_name);
+            mRecipeName = (TextView) view.findViewById(R.id.recipe_name);
             view.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mRecipeName.getText() + "'";
         }
 
         @Override

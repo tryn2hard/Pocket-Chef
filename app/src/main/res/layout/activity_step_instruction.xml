@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.robot.pocket_chef.Steps"
+    tools:context="com.example.robot.pocket_chef.StepInstruction"
     android:name="com.example.robot.pocket_chef.StepsFragment"
-    android:id="@+id/steps_fragment_container">
+    android:id="@+id/step_instruction_fragment_container">
 </FrameLayout>
