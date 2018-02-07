@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.robot.pocket_chef.Steps"
     android:name="com.example.robot.pocket_chef.StepsFragment"
     android:id="@+id/steps_fragment_container">
-</fragment>
+</FrameLayout>

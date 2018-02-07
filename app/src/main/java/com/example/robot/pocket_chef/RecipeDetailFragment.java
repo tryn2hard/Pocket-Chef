@@ -31,8 +31,7 @@ public class RecipeDetailFragment extends Fragment implements
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    private int mRecipeId; 
-
+    private int mRecipeId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -74,8 +73,11 @@ public class RecipeDetailFragment extends Fragment implements
 
     @Override
     public void onClick(int id) {
-        Log.d(RecipeDetailFragment.class.getSimpleName(), "Is this click going through?");
+        Bundle b = new Bundle();
+        b.putInt("recipeId", mRecipeId);
+        b.putInt("descriptionPos", id);
         Intent stepsIntent = new Intent(getActivity(), Steps.class);
+        stepsIntent.putExtras(b);
         startActivity(stepsIntent);
     }
 

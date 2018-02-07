@@ -18,6 +18,16 @@ public class Steps extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
 
+        Bundle b = new Bundle();
+        b.putInt("recipeId", getIntent().getIntExtra("recipeId", 1));
+        b.putInt("descriptionPos", getIntent().getIntExtra("descriptionPos", 1));
+
+        StepsFragment stepFragment = new StepsFragment();
+        stepFragment.setArguments(b);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.steps_fragment_container, stepFragment).commit();
+
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

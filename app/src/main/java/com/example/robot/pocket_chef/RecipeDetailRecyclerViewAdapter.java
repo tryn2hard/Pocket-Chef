@@ -49,13 +49,13 @@ public class RecipeDetailRecyclerViewAdapter extends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
-        holder.mRecipeNameView.setText(mValues.get(mRecipeId).steps.get(position));
+        holder.mRecipeNameView.setText(mValues.get(mRecipeId).stepDescription.get(position));
     }
 
     @Override
     public int getItemCount() {
         Recipes selectedRecipe = mValues.get(mRecipeId);
-        return selectedRecipe.steps.size();
+        return selectedRecipe.stepDescription.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

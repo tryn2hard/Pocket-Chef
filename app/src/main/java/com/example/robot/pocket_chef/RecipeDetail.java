@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * Created by Robot on 2/4/2018.
@@ -30,7 +31,7 @@ public class RecipeDetail extends AppCompatActivity  {
         recipeDetailFragment.setArguments(b);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.detail_list_fragment, recipeDetailFragment).commit();
+                .add(R.id.detail_list_fragment, recipeDetailFragment).commit();
 
         if(findViewById(R.id.pocket_chef_linear_layout) != null){
             mTwoPane = true;
@@ -45,6 +46,8 @@ public class RecipeDetail extends AppCompatActivity  {
                         .add(R.id.steps_fragment_container, stepsFragment)
                         .commit();
             }
+        } else {
+            mTwoPane = false;
         }
 
         // Show the Up button in the action bar.
@@ -53,6 +56,16 @@ public class RecipeDetail extends AppCompatActivity  {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+    }
+
+    public void onDescriptionSelected(int position){
+
+        Toast.makeText(this, "Position clicked = " + position, Toast.LENGTH_SHORT).show();
+
+        if(mTwoPane){
+            StepsFragment newFragment = new StepsFragment();
+
+        }
     }
 
     @Override

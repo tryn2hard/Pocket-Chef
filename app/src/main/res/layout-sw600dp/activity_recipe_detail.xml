@@ -8,7 +8,7 @@
     tools:context="com.example.robot.pocket_chef.Recipes">
 
 
-    <fragment
+    <FrameLayout
         android:id="@+id/detail_list_fragment"
         android:name="com.example.robot.pocket_chef.RecipeDetailFragment"
         android:layout_width="400dp"
