@@ -43,7 +43,7 @@ public class StepInstructionFragment extends Fragment {
         if(mRecipeId == -1 && mStepDescriptionPos == -1){
             textView.setText("Lets Start Baking!");
         }else {
-            textView.setText(DummyContent.ITEMS.get(mRecipeId).stepInstruction.get(mStepDescriptionPos));
+            textView.setText(DummyContent.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).description);
         }
         return view;
     }

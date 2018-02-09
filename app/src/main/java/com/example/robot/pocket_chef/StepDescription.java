@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.robot.pocket_chef.dummy.DummyContent;
+
 
 /**
  * Created by Robot on 2/4/2018.
@@ -61,6 +65,7 @@ public class StepDescription extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(DummyContent.ITEMS.get(mRecipeId).recipeName);
         }
 
     }

@@ -48,13 +48,13 @@ public class StepDescriptionRecyclerViewAdapter extends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mRecipes.get(position);
         holder.mStepNumberView.setText(mRecipes.get(position).id);
-        holder.mStepDescriptionView.setText(mRecipes.get(mRecipeId).stepDescription.get(position));
+        holder.mStepDescriptionView.setText(mRecipes.get(mRecipeId).steps.get(position).shortDescription);
     }
 
     @Override
     public int getItemCount() {
         Recipe selectedRecipe = mRecipes.get(mRecipeId);
-        return selectedRecipe.stepDescription.size();
+        return selectedRecipe.steps.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

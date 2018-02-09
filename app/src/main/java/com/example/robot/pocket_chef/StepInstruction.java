@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.robot.pocket_chef.dummy.DummyContent;
+
 /**
  * Created by Robot on 2/4/2018.
  */
@@ -20,7 +22,6 @@ public class StepInstruction extends AppCompatActivity {
         Bundle b = new Bundle();
         b.putInt("recipeId", getIntent().getIntExtra("recipeId", -1));
         b.putInt("descriptionPos", getIntent().getIntExtra("descriptionPos", -1));
-
         StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
         stepInstructionFragment.setArguments(b);
 
@@ -31,6 +32,9 @@ public class StepInstruction extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(
+                    DummyContent.ITEMS.get(getIntent()
+                            .getIntExtra("recipeId", -1)).recipeName);
         }
     }
 
