@@ -64,5 +64,13 @@ public class IngredientsFragment extends Fragment {
         super.onDetach();
     }
 
+    public static IngredientsFragment newInstance(int recipeId){
+        IngredientsFragment newFragment = new IngredientsFragment();
+        Bundle b = new Bundle();
+        b.putInt(ARG_RECIPE_ID, recipeId);
+        newFragment.setArguments(b);
+        return newFragment;
+    }
+
 
 }

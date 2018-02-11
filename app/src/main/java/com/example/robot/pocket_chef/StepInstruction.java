@@ -2,12 +2,14 @@ package com.example.robot.pocket_chef;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Switch;
 
 import com.example.robot.pocket_chef.dummy.DummyContent;
+
+import java.util.List;
 
 /**
  * Created by Robot on 2/4/2018.
@@ -27,6 +29,12 @@ public class StepInstruction extends AppCompatActivity {
 
     private final static String DESCRIPTION_POSITION = "descriptionPos";
 
+    private final static int INGREDIENT_OFFSETTING = 1;
+
+    private int mRecipeId;
+
+    private int mDescriptionPos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,28 +42,23 @@ public class StepInstruction extends AppCompatActivity {
 
         int fragmentSelector = getIntent().getIntExtra(FRAGMENT_SELECTOR_ARG, 0);
 
+        mRecipeId = getIntent().getIntExtra(RECIPE_ID_ARG, 0);
+        List<DummyContent.Step> stepList = DummyContent.ITEMS.get(mRecipeId).steps;
+        ViewPager pager = findViewById(R.id.step_instruction_viewpager);
+        pager.setAdapter(new RecipeInstructionFragmentPagerAdapter(getSupportFragmentManager(),stepList, mRecipeId ));
+
+
         switch (fragmentSelector){
             case STEP_INSTRUCTION_SELECTOR_ARG:
-                Bundle b = new Bundle();
-                b.putInt(RECIPE_ID_ARG, getIntent().getIntExtra(RECIPE_ID_ARG, -1));
-                b.putInt(DESCRIPTION_POSITION, getIntent().getIntExtra(DESCRIPTION_POSITION, -1));
-                StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
-                stepInstructionFragment.setArguments(b);
-
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.step_instruction_fragment_container, stepInstructionFragment).commit();
+                mDescriptionPos = getIntent().getIntExtra(DESCRIPTION_POSITION, 0);
+                mDescriptionPos = mDescriptionPos + INGREDIENT_OFFSETTING;
                 break;
 
             case INGREDIENT_SELECTOR_ARG:
-                Bundle ingredientsData = new Bundle();
-                ingredientsData.putInt(RECIPE_ID_ARG, getIntent().getIntExtra(RECIPE_ID_ARG, -1));
-                IngredientsFragment ingredientsFragment = new IngredientsFragment();
-                ingredientsFragment.setArguments(ingredientsData);
-
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.step_instruction_fragment_container, ingredientsFragment).commit();
+                mDescriptionPos = getIntent().getIntExtra(DESCRIPTION_POSITION, 0);
                 break;
         }
+        pager.setCurrentItem(mDescriptionPos, true);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -71,12 +74,7 @@ public class StepInstruction extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
+            // This ID represents the Home or Up button.
             navigateUpTo(new Intent(this, StepDescription.class));
             return true;
         }

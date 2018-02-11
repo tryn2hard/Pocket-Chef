@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -20,20 +19,15 @@ public class StepDescription extends AppCompatActivity implements
         StepDescriptionFragment.OnDescriptionClickListener {
 
     private final static String TAG = StepDescription.class.getSimpleName();
-
     private final static String FRAGMENT_SELECTOR_ARG = "fragmentSelector";
-
     private final static int INGREDIENT_SELECTOR_ARG = 1;
-
     private final static int STEP_INSTRUCTION_SELECTOR_ARG = 0;
-
     private final static String RECIPE_ID_ARG = "recipeId";
-
     private final static String DESCRIPTION_POSITION = "descriptionPos";
 
     private boolean mTwoPane;
-
     private int mRecipeId;
+    private Bundle mExtras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +37,24 @@ public class StepDescription extends AppCompatActivity implements
         if (getIntent() != null) {
             mRecipeId = getIntent().getIntExtra(RECIPE_ID_ARG, 0);
         }
-        Bundle b = new Bundle();
-        b.putInt(RECIPE_ID_ARG, mRecipeId);
+        mExtras = new Bundle();
+        mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
         StepDescriptionFragment stepDescriptionFragment = new StepDescriptionFragment();
-        stepDescriptionFragment.setArguments(b);
+        stepDescriptionFragment.setArguments(mExtras);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.step_description_list_fragment_container, stepDescriptionFragment).commit();
 
         if (findViewById(R.id.pocket_chef_linear_layout) != null) {
             mTwoPane = true;
+            Bundle mInitialTwoPaneExtras = new Bundle();
 
             if (savedInstanceState == null) {
 
-                Bundle intialData = new Bundle();
-                intialData.putInt(RECIPE_ID_ARG, -1);
-                intialData.putInt(DESCRIPTION_POSITION, -1);
-                intialData.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
+                mInitialTwoPaneExtras.putInt(RECIPE_ID_ARG, -1);
+                mInitialTwoPaneExtras.putInt(DESCRIPTION_POSITION, -1);
+                mInitialTwoPaneExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
 
-                // In two-pane mode
-                StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
-                stepInstructionFragment.setArguments(intialData);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.step_instruction_fragment_container, stepInstructionFragment)
-                        .commit();
+                startStepInstructionFragment(mInitialTwoPaneExtras);
             }
         } else {
             mTwoPane = false;
@@ -84,22 +73,14 @@ public class StepDescription extends AppCompatActivity implements
 
         Toast.makeText(this, "Position clicked = " + stepDescriptionPos, Toast.LENGTH_SHORT).show();
 
-        Bundle b = new Bundle();
-        b.putInt(RECIPE_ID_ARG, mRecipeId);
-        b.putInt(DESCRIPTION_POSITION, stepDescriptionPos);
-        b.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
+        mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
+        mExtras.putInt(DESCRIPTION_POSITION, stepDescriptionPos);
+        mExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
 
         if (mTwoPane) {
-            StepInstructionFragment newFragment = new StepInstructionFragment();
-            newFragment.setArguments(b);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_instruction_fragment_container, newFragment)
-                    .commit();
+            startStepInstructionFragment(mExtras);
         } else {
-
-            Intent stepsIntent = new Intent(this, StepInstruction.class);
-            stepsIntent.putExtras(b);
-            startActivity(stepsIntent);
+            startStepInstructionIntent(mExtras);
         }
     }
 
@@ -108,11 +89,7 @@ public class StepDescription extends AppCompatActivity implements
         int id = item.getItemId();
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
+            // activity, the Up button is shown.
             navigateUpTo(new Intent(this, Recipes.class));
             return true;
         }
@@ -120,21 +97,34 @@ public class StepDescription extends AppCompatActivity implements
     }
 
     public void ingredientsOnclick(View view){
-        Bundle b = new Bundle();
-        b.putInt(RECIPE_ID_ARG, mRecipeId);
-        b.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_ARG);
+
+        mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
+        mExtras.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_ARG);
 
         if (mTwoPane) {
             IngredientsFragment newFragment = new IngredientsFragment();
-            newFragment.setArguments(b);
+            newFragment.setArguments(mExtras);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.step_instruction_fragment_container, newFragment)
                     .commit();
         } else {
-            Intent stepsIntent = new Intent(this, StepInstruction.class);
-            stepsIntent.putExtras(b);
-            startActivity(stepsIntent);
+            startStepInstructionIntent(mExtras);
         }
+    }
+
+    public void startStepInstructionFragment(Bundle extras){
+        StepInstructionFragment newFragment = new StepInstructionFragment();
+        newFragment.setArguments(extras);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.step_instruction_fragment_container, newFragment)
+                .commit();
+
+    }
+
+    public void startStepInstructionIntent(Bundle extras){
+        Intent stepsIntent = new Intent(this, StepInstruction.class);
+        stepsIntent.putExtras(extras);
+        startActivity(stepsIntent);
     }
 
 }

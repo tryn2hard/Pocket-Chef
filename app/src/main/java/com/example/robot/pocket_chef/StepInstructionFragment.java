@@ -48,4 +48,14 @@ public class StepInstructionFragment extends Fragment {
         return view;
     }
 
+    public static StepInstructionFragment newInstance(int recipeId, int stepDescriptionPos){
+        StepInstructionFragment newFragment = new StepInstructionFragment();
+        Bundle b = new Bundle();
+        b.putInt(ARG_RECIPE_ID, recipeId);
+        b.putInt(ARG_DESCRIPTION_POS, stepDescriptionPos);
+        newFragment.setArguments(b);
+
+        return newFragment;
+    }
+
 }
