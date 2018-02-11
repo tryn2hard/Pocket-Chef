@@ -1,6 +1,7 @@
 package com.example.robot.pocket_chef;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.example.robot.pocket_chef.dummy.DummyContent.Recipe;
 
 import java.util.List;
+
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Recipe} and makes a call to the
@@ -23,6 +25,8 @@ public class StepDescriptionRecyclerViewAdapter extends
     private final DetailAdapterOnClickHandler mClickHandler;
 
     private final int mRecipeId;
+
+    private final static String TAG = StepDescriptionRecyclerViewAdapter.class.getSimpleName();
 
 
     public StepDescriptionRecyclerViewAdapter(List<Recipe> items, int RecipeId,
@@ -54,6 +58,7 @@ public class StepDescriptionRecyclerViewAdapter extends
     @Override
     public int getItemCount() {
         Recipe selectedRecipe = mRecipes.get(mRecipeId);
+        Log.d(TAG, "size = " + selectedRecipe.steps.size());
         return selectedRecipe.steps.size();
     }
 

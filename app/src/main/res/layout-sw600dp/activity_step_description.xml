@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="horizontal"
-    tools:context="com.example.robot.pocket_chef.Recipes">
+    android:orientation="horizontal">
 
-
-    <FrameLayout
-        android:id="@+id/step_description_list_fragment_container"
-        android:name="com.example.robot.pocket_chef.RecipeDetailFragment"
+    <LinearLayout
         android:layout_width="400dp"
-        android:layout_height="match_parent"/>
-
-    <View
-        android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text="Ingredients"
+            android:onClick="ingredientsOnclick"/>
+
+
+        <FrameLayout
+            android:id="@+id/step_description_list_fragment_container"
+            android:name="com.example.robot.pocket_chef.RecipeDetailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_margin"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/pocket_chef_linear_layout"
@@ -35,6 +51,7 @@
             android:id="@+id/step_instruction_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         </FrameLayout>
 
     </LinearLayout>

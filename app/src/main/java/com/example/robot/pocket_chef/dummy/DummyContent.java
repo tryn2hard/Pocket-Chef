@@ -51,7 +51,7 @@ public class DummyContent {
                 String recipe2 = "Brownies";
                 List<Step> recipe2Steps = Arrays.asList(
                         new Step("Recipe Introduction", "2. Melt the butter and bittersweet chocolate together in a microwave or a double boiler. If microwaving, heat for 30 seconds at a time, removing bowl and stirring ingredients in between.", null, null),
-                            new Step("Starting prep","3. Mix both sugars into the melted chocolate in a large mixing bowl until mixture is smooth and uniform.", null, null)
+                        new Step("Starting prep", "3. Mix both sugars into the melted chocolate in a large mixing bowl until mixture is smooth and uniform.", null, null)
 
                 );
 
@@ -77,12 +77,10 @@ public class DummyContent {
             case 3:
                 String recipe4 = "Cheese Cake";
                 List<Step> recipe4Steps = Arrays.asList(
-                        new Step("Recipe Introduction","Recipe Introduction", null, null),
+                        new Step("Recipe Introduction", "Recipe Introduction", null, null),
                         new Step("Starting prep.", "1. Preheat the oven to 350\u00b0F. Grease the bottom of a 9-inch round springform pan with butter.", null, null)
-                        );
-                List<String> recipe4StepInstruction = Arrays.asList(
+                );
 
-                        );
                 List<Ingredient> recipe4Ingredients = Arrays.asList(
                         new Ingredient(2, "CUP", "Graham Cracker crumbs"),
                         new Ingredient(6, "TBLSP", "unsalted butter"),
@@ -122,7 +120,7 @@ public class DummyContent {
         public final String measure;
         public final String ingredient;
 
-        public Ingredient(double quantity, String measure, String ingredient){
+        public Ingredient(double quantity, String measure, String ingredient) {
             this.quantity = quantity;
             this.measure = measure;
             this.ingredient = ingredient;
@@ -136,7 +134,7 @@ public class DummyContent {
         public final String videoUrl;
         public final String thumbnailUrl;
 
-        public Step(String shortDescription, String description, String videoUrl, String thumbnailUrl){
+        public Step(String shortDescription, String description, String videoUrl, String thumbnailUrl) {
 
             this.shortDescription = shortDescription;
             this.description = description;

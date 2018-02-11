@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.robot.pocket_chef.dummy.DummyContent;
@@ -20,6 +21,16 @@ public class StepDescription extends AppCompatActivity implements
 
     private final static String TAG = StepDescription.class.getSimpleName();
 
+    private final static String FRAGMENT_SELECTOR_ARG = "fragmentSelector";
+
+    private final static int INGREDIENT_SELECTOR_ARG = 1;
+
+    private final static int STEP_INSTRUCTION_SELECTOR_ARG = 0;
+
+    private final static String RECIPE_ID_ARG = "recipeId";
+
+    private final static String DESCRIPTION_POSITION = "descriptionPos";
+
     private boolean mTwoPane;
 
     private int mRecipeId;
@@ -30,14 +41,12 @@ public class StepDescription extends AppCompatActivity implements
         setContentView(R.layout.activity_step_description);
 
         if (getIntent() != null) {
-            mRecipeId = getIntent().getIntExtra("recipeId", 0);
+            mRecipeId = getIntent().getIntExtra(RECIPE_ID_ARG, 0);
         }
         Bundle b = new Bundle();
-        b.putInt("recipeId", mRecipeId);
-
+        b.putInt(RECIPE_ID_ARG, mRecipeId);
         StepDescriptionFragment stepDescriptionFragment = new StepDescriptionFragment();
         stepDescriptionFragment.setArguments(b);
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.step_description_list_fragment_container, stepDescriptionFragment).commit();
 
@@ -47,8 +56,9 @@ public class StepDescription extends AppCompatActivity implements
             if (savedInstanceState == null) {
 
                 Bundle intialData = new Bundle();
-                intialData.putInt("recipeId", -1);
-                intialData.putInt("descriptionPos", -1);
+                intialData.putInt(RECIPE_ID_ARG, -1);
+                intialData.putInt(DESCRIPTION_POSITION, -1);
+                intialData.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
 
                 // In two-pane mode
                 StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
@@ -75,8 +85,9 @@ public class StepDescription extends AppCompatActivity implements
         Toast.makeText(this, "Position clicked = " + stepDescriptionPos, Toast.LENGTH_SHORT).show();
 
         Bundle b = new Bundle();
-        b.putInt("recipeId", mRecipeId);
-        b.putInt("descriptionPos", stepDescriptionPos);
+        b.putInt(RECIPE_ID_ARG, mRecipeId);
+        b.putInt(DESCRIPTION_POSITION, stepDescriptionPos);
+        b.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
 
         if (mTwoPane) {
             StepInstructionFragment newFragment = new StepInstructionFragment();
@@ -106,6 +117,24 @@ public class StepDescription extends AppCompatActivity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void ingredientsOnclick(View view){
+        Bundle b = new Bundle();
+        b.putInt(RECIPE_ID_ARG, mRecipeId);
+        b.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_ARG);
+
+        if (mTwoPane) {
+            IngredientsFragment newFragment = new IngredientsFragment();
+            newFragment.setArguments(b);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.step_instruction_fragment_container, newFragment)
+                    .commit();
+        } else {
+            Intent stepsIntent = new Intent(this, StepInstruction.class);
+            stepsIntent.putExtras(b);
+            startActivity(stepsIntent);
+        }
     }
 
 }
