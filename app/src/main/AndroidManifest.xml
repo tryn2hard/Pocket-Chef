@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Recipes">
+        <activity android:name=".RecipesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,18 +17,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StepDescription"
-            android:parentActivityName=".Recipes">
+            android:name=".StepDescriptionActivity"
+            android:parentActivityName=".RecipesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.robot.pocket_chef.Recipes"/>
-        </activity>
-        <activity
-            android:name=".StepInstruction"
-            android:parentActivityName=".StepInstruction">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.robot.pocket_chef.StepDescription"/>
+                android:value="com.example.robot.pocket_chef.RecipesActivity"/>
         </activity>
     </application>
 

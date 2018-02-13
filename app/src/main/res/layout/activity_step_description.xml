@@ -16,8 +16,14 @@
         android:text="Ingredients"
         android:onClick="ingredientsOnclick"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/divider_view"/>
+
     <FrameLayout
-        android:id="@+id/step_description_list_fragment_container"
+        android:id="@+id/step_description_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

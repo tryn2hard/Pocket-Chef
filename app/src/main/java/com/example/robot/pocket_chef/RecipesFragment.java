@@ -2,6 +2,7 @@ package com.example.robot.pocket_chef;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.robot.pocket_chef.dummy.DummyContent;
+import com.example.robot.pocket_chef.data.TestData;
 
 /**
  * A fragment representing a list of Items.
@@ -50,9 +51,14 @@ public class RecipesFragment extends Fragment implements
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            } else {
+                mColumnCount = 3;
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
 
-            recyclerView.setAdapter(new RecipesRecyclerViewAdapter(DummyContent.ITEMS, this));
+            recyclerView.setAdapter(new RecipesRecyclerViewAdapter(TestData.ITEMS, this));
         }
         return view;
     }
@@ -61,7 +67,7 @@ public class RecipesFragment extends Fragment implements
     public void onClick(int id) {
         Bundle b = new Bundle();
         b.putInt("recipeId", id);
-        final Intent recipeDetailIntent = new Intent(getActivity(), StepDescription.class);
+        final Intent recipeDetailIntent = new Intent(getActivity(), StepDescriptionActivity.class);
         recipeDetailIntent.putExtras(b);
         startActivity(recipeDetailIntent);
         Log.d(TAG, "recipeId is " + id);

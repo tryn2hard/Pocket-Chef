@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.robot.pocket_chef.dummy.DummyContent.Recipe;
+import com.example.robot.pocket_chef.data.TestData.Recipe;
 
 import java.util.List;
 

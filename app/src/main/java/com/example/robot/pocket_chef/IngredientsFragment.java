@@ -3,7 +3,6 @@ package com.example.robot.pocket_chef;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.example.robot.pocket_chef.dummy.DummyContent;
-
-import java.util.List;
+import com.example.robot.pocket_chef.data.TestData;
 
 /**
  * A fragment representing a list of Items.
@@ -54,7 +51,7 @@ public class IngredientsFragment extends Fragment {
 
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(DummyContent.ITEMS, mRecipeId));
+            recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(TestData.ITEMS, mRecipeId));
         }
         return view;
     }

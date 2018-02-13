@@ -1,4 +1,4 @@
-package com.example.robot.pocket_chef.dummy;
+package com.example.robot.pocket_chef.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.List;
  * <p>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class DummyContent {
+public class TestData {
 
     /**
      * An array of sample (dummy) items.

@@ -5,6 +5,6 @@
     android:name="com.example.robot.pocket_chef.RecipesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.robot.pocket_chef.Recipes"
+    tools:context="com.example.robot.pocket_chef.RecipesActivity"
     android:id="@+id/recipes_list_fragment">
 </fragment>

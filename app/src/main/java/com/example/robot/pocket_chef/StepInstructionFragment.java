@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.robot.pocket_chef.dummy.DummyContent;
+import com.example.robot.pocket_chef.data.TestData;
 
 
 /**
@@ -40,11 +40,8 @@ public class StepInstructionFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_step_instruction, container, false);
         TextView textView = (TextView) view.findViewById(R.id.step_instruction_text_view);
-        if(mRecipeId == -1 && mStepDescriptionPos == -1){
-            textView.setText("Lets Start Baking!");
-        }else {
-            textView.setText(DummyContent.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).description);
-        }
+        textView.setText(TestData.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).description);
+
         return view;
     }
 
