@@ -1,4 +1,4 @@
-package com.example.robot.pocket_chef;
+package com.example.robot.pocket_chef.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.example.robot.pocket_chef.R;
+import com.example.robot.pocket_chef.adapters.StepDescriptionRecyclerViewAdapter;
 import com.example.robot.pocket_chef.data.TestData;
 
 
@@ -21,7 +23,7 @@ import com.example.robot.pocket_chef.data.TestData;
  * interface.
  */
 public class StepDescriptionFragment extends Fragment implements
-        StepDescriptionRecyclerViewAdapter.DetailAdapterOnClickHandler{
+        StepDescriptionRecyclerViewAdapter.DetailAdapterOnClickHandler {
 
 
     private static final String ARG_RECIPE_ID = "recipeId";

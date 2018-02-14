@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.robot.pocket_chef.RecipesFragment"
+    tools:context="com.example.robot.pocket_chef.fragments.RecipesFragment"
     tools:listitem="@layout/fragment_recipes" />

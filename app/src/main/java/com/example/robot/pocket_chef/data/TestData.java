@@ -36,7 +36,7 @@ public class TestData {
             case 0:
                 String recipe1 = "Nutella Pie";
                 List<Step> recipe1steps = Arrays.asList(
-                        new Step("Starting prep.", "Preheat the oven to 350\u00b0f. Butter a 9\" deep dish pie pan.", null, null),
+                        new Step("Starting prep.", "Preheat the oven to 350\u00b0f. Butter a 9\" deep dish pie pan.", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4", null),
                         new Step("Prep the cookie crust.", "Whisk the graham cracker crumbs, 50 grams of sugar, and 1/2 teaspoon of salt together in a medium bowl. Pour the melted butter and 1 teaspoon of vanilla into the dry ingredients and stir together until evenly mixed.", null, null)
                 );
 
@@ -50,7 +50,7 @@ public class TestData {
             case 1:
                 String recipe2 = "Brownies";
                 List<Step> recipe2Steps = Arrays.asList(
-                        new Step("Recipe Introduction", "2. Melt the butter and bittersweet chocolate together in a microwave or a double boiler. If microwaving, heat for 30 seconds at a time, removing bowl and stirring ingredients in between.", null, null),
+                        new Step("Recipe Introduction", "2. Melt the butter and bittersweet chocolate together in a microwave or a double boiler. If microwaving, heat for 30 seconds at a time, removing bowl and stirring ingredients in between.", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdc33_-intro-brownies/-intro-brownies.mp4", null),
                         new Step("Starting prep", "3. Mix both sugars into the melted chocolate in a large mixing bowl until mixture is smooth and uniform.", null, null)
 
                 );

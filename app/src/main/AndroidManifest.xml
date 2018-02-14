@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.robot.pocket_chef">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecipesActivity">
+        <activity android:name=".activities.RecipesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,11 +19,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StepDescriptionActivity"
-            android:parentActivityName=".RecipesActivity">
+            android:name=".activities.StepDescriptionActivity"
+            android:parentActivityName=".activities.RecipesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.robot.pocket_chef.RecipesActivity"/>
+                android:value="com.example.robot.pocket_chef.activities.RecipesActivity"/>
+        </activity>
+        <activity
+            android:name=".activities.StepInstructionActivity"
+            android:parentActivityName=".activities.StepDescriptionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.robot.pocket_chef.activities.StepDescriptionActivity"/>
         </activity>
     </application>
 

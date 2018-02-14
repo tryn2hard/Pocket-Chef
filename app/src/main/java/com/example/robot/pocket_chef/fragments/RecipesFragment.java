@@ -1,4 +1,4 @@
-package com.example.robot.pocket_chef;
+package com.example.robot.pocket_chef.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.robot.pocket_chef.R;
+import com.example.robot.pocket_chef.adapters.RecipesRecyclerViewAdapter;
+import com.example.robot.pocket_chef.activities.StepDescriptionActivity;
 import com.example.robot.pocket_chef.data.TestData;
 
 /**
@@ -21,7 +24,7 @@ import com.example.robot.pocket_chef.data.TestData;
  * interface.
  */
 public class RecipesFragment extends Fragment implements
-        RecipesRecyclerViewAdapter.RecipesAdapterOnClickHandler{
+        RecipesRecyclerViewAdapter.RecipesAdapterOnClickHandler {
 
 
     private final static String TAG = RecipesFragment.class.getName();

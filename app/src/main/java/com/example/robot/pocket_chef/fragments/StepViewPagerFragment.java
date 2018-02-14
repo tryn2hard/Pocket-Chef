@@ -1,4 +1,4 @@
-package com.example.robot.pocket_chef;
+package com.example.robot.pocket_chef.fragments;
 
 
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.robot.pocket_chef.R;
+import com.example.robot.pocket_chef.adapters.StepPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +54,6 @@ public class StepViewPagerFragment extends Fragment {
         TabLayout tabLayout = view.findViewById(R.id.tabs);
 
         tabLayout.setupWithViewPager(pager);
-
 
         switch (fragmentSelector){
             case STEP_INSTRUCTION_SELECTOR_ARG:

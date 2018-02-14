@@ -1,8 +1,10 @@
-package com.example.robot.pocket_chef;
+package com.example.robot.pocket_chef.activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.robot.pocket_chef.R;
 
 public class RecipesActivity extends AppCompatActivity {
 

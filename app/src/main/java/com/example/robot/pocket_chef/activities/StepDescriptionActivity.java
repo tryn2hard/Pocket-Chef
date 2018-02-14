@@ -1,4 +1,4 @@
-package com.example.robot.pocket_chef;
+package com.example.robot.pocket_chef.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robot.pocket_chef.R;
+import com.example.robot.pocket_chef.fragments.StepDescriptionFragment;
+import com.example.robot.pocket_chef.fragments.StepViewPagerFragment;
 import com.example.robot.pocket_chef.data.TestData;
 
 
@@ -46,6 +49,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         }
         mExtras = new Bundle();
         mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
+
         StepDescriptionFragment stepDescriptionFragment = new StepDescriptionFragment();
         stepDescriptionFragment.setArguments(mExtras);
         getSupportFragmentManager().beginTransaction()
@@ -58,7 +62,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
             if (savedInstanceState == null) {
 
                 mInitialTwoPaneExtras.putInt(RECIPE_ID_ARG, mRecipeId);
-                mInitialTwoPaneExtras.putInt(DESCRIPTION_POSITION, - INGREDIENT_OFFSET );
+                mInitialTwoPaneExtras.putInt(DESCRIPTION_POSITION, -INGREDIENT_OFFSET);
                 mInitialTwoPaneExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
                 loadViewPagerFragment(mInitialTwoPaneExtras);
             }
@@ -83,7 +87,12 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         mExtras.putInt(DESCRIPTION_POSITION, stepDescriptionPos);
         mExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
 
-        loadViewPagerFragment(mExtras);
+        if(mTwoPane) {
+            loadViewPagerFragment(mExtras);
+        }
+        else{
+            startStepInstructionIntent(mExtras);
+        }
 
     }
 
@@ -99,7 +108,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    public void ingredientsOnclick(View view){
+    public void ingredientsOnclick(View view) {
 
         mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
         mExtras.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_ARG);
@@ -112,27 +121,25 @@ public class StepDescriptionActivity extends AppCompatActivity implements
                     .commit();
         } else {
 
-            loadViewPagerFragment(mExtras);
+            startStepInstructionIntent(mExtras);
         }
     }
 
-    public void loadViewPagerFragment(Bundle extras){
+    public void loadViewPagerFragment(Bundle extras) {
 
         StepViewPagerFragment newFragment = new StepViewPagerFragment();
         newFragment.setArguments(extras);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.step_instruction_fragment_container, newFragment)
+                .commit();
 
-        if(!mTwoPane) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_description_fragment_container, newFragment)
-                    .commit();
-            mIngredientsView.setVisibility(View.GONE);
-            mDividerView.setVisibility(View.GONE);
-        } else{
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_instruction_fragment_container, newFragment)
-                    .commit();
+    }
 
-        }
+
+    public void startStepInstructionIntent(Bundle extras) {
+        Intent stepsIntent = new Intent(this, StepInstructionActivity.class);
+        stepsIntent.putExtras(extras);
+        startActivity(stepsIntent);
     }
 
 }

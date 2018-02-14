@@ -1,4 +1,4 @@
-package com.example.robot.pocket_chef;
+package com.example.robot.pocket_chef.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.robot.pocket_chef.R;
 import com.example.robot.pocket_chef.data.TestData.Recipe;
 
 import java.util.List;
