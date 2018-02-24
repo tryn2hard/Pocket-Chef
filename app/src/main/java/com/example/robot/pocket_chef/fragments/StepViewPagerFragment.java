@@ -1,10 +1,14 @@
 package com.example.robot.pocket_chef.fragments;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +21,22 @@ import com.example.robot.pocket_chef.adapters.StepPagerAdapter;
  */
 public class StepViewPagerFragment extends Fragment {
 
+    // Constants
     private final static String FRAGMENT_SELECTOR_ARG = "fragmentSelector";
-
-    private final static int INGREDIENT_SELECTOR_ARG = 1;
-
-    private final static int STEP_INSTRUCTION_SELECTOR_ARG = 0;
-
     private final static String RECIPE_ID_ARG = "recipeId";
-
     private final static String DESCRIPTION_POSITION = "descriptionPos";
 
+    private final static int INGREDIENT_SELECTOR_ARG = 1;
+    private final static int STEP_INSTRUCTION_SELECTOR_ARG = 0;
     private final static int INGREDIENT_OFFSET = 1;
 
+    // member variables
     private int mRecipeId;
-
     private int mDescriptionPos;
+    private int mFragmentSelector;
+    private ViewPager mPager;
+    private StepPagerAdapter mAdapter;
+    private Context mContext;
 
     public StepViewPagerFragment() {
         // Required empty public constructor
@@ -41,21 +46,33 @@ public class StepViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_step_view_pager, null);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_step_view_pager, container, false);
 
-        int fragmentSelector = getArguments().getInt(FRAGMENT_SELECTOR_ARG, 0);
+        if (getArguments() != null) {
+            mFragmentSelector = getArguments().getInt(FRAGMENT_SELECTOR_ARG, 0);
+            mRecipeId = getArguments().getInt(RECIPE_ID_ARG, 0);
+            mContext = getActivity();
+        }
 
-        mRecipeId = getArguments().getInt(RECIPE_ID_ARG, 0);
+        mPager = rootView.findViewById(R.id.step_viewpager);
+        mAdapter = new StepPagerAdapter(getChildFragmentManager(), mRecipeId);
+        mPager.setAdapter(mAdapter);
 
-        ViewPager pager = view.findViewById(R.id.step_viewpager);
+        TabLayout tabLayout = rootView.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mPager);
 
-        pager.setAdapter(new StepPagerAdapter(getChildFragmentManager(), mRecipeId));
+        mPager.setOffscreenPageLimit(1);
 
-        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        offset(mFragmentSelector);
 
-        tabLayout.setupWithViewPager(pager);
+        return rootView;
 
-        switch (fragmentSelector){
+    }
+
+
+    private void offset(int fragmentSelector) {
+
+        switch (fragmentSelector) {
             case STEP_INSTRUCTION_SELECTOR_ARG:
                 mDescriptionPos = getArguments().getInt(DESCRIPTION_POSITION, 0);
                 mDescriptionPos = mDescriptionPos + INGREDIENT_OFFSET;
@@ -66,10 +83,27 @@ public class StepViewPagerFragment extends Fragment {
                 mDescriptionPos = mDescriptionPos - INGREDIENT_OFFSET;
                 break;
         }
-        pager.setCurrentItem(mDescriptionPos, true);
-
-        return view;
-
+        mPager.setCurrentItem(mDescriptionPos, true);
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Fragment page = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.step_viewpager + ":" + mPager.getCurrentItem());
+            Log.d("ViewPager", "View pager position " + mPager.getCurrentItem());
+
+            if (page instanceof StepInstructionFragment) {
+                StepInstructionFragment currentFrag = (StepInstructionFragment) page;
+                Context c = currentFrag.getContext();
+                currentFrag.initFullscreenDialog(c);
+                currentFrag.openFullscreenDialog();
+
+            }
+        }
+    }
+
 
 }

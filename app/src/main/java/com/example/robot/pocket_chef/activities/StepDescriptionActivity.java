@@ -22,17 +22,21 @@ import com.example.robot.pocket_chef.data.TestData;
 public class StepDescriptionActivity extends AppCompatActivity implements
         StepDescriptionFragment.OnDescriptionClickListener {
 
+    // Constants
     private final static String TAG = StepDescriptionActivity.class.getSimpleName();
     private final static String FRAGMENT_SELECTOR_ARG = "fragmentSelector";
-    private final static int INGREDIENT_SELECTOR_ARG = 1;
-    private final static int STEP_INSTRUCTION_SELECTOR_ARG = 0;
+    private final static int INGREDIENT_SELECTOR_CONSTANT = 1;
+    private final static int STEP_INSTRUCTION_SELECTOR_CONSTANT = 0;
     private final static String RECIPE_ID_ARG = "recipeId";
     private final static String DESCRIPTION_POSITION = "descriptionPos";
     private final static int INGREDIENT_OFFSET = 1;
 
+    // Member variables
     private boolean mTwoPane;
     private int mRecipeId;
     private Bundle mExtras;
+
+    // Views
     private TextView mIngredientsView;
     private View mDividerView;
 
@@ -45,7 +49,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         mDividerView = findViewById(R.id.divider_view);
 
         if (getIntent() != null) {
-            mRecipeId = getIntent().getIntExtra(RECIPE_ID_ARG, 0);
+            mRecipeId = getIntent().getIntExtra(RECIPE_ID_ARG, 1);
         }
         mExtras = new Bundle();
         mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
@@ -55,6 +59,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.step_description_fragment_container, stepDescriptionFragment).commit();
 
+        // Check to see if the user is using a tablet
         if (findViewById(R.id.pocket_chef_linear_layout) != null) {
             mTwoPane = true;
             Bundle mInitialTwoPaneExtras = new Bundle();
@@ -63,7 +68,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
                 mInitialTwoPaneExtras.putInt(RECIPE_ID_ARG, mRecipeId);
                 mInitialTwoPaneExtras.putInt(DESCRIPTION_POSITION, -INGREDIENT_OFFSET);
-                mInitialTwoPaneExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
+                mInitialTwoPaneExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_CONSTANT);
                 loadViewPagerFragment(mInitialTwoPaneExtras);
             }
         } else {
@@ -81,11 +86,9 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
     public void onDescriptionSelected(int stepDescriptionPos) {
 
-        Toast.makeText(this, "Position clicked = " + stepDescriptionPos, Toast.LENGTH_SHORT).show();
-
         mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
         mExtras.putInt(DESCRIPTION_POSITION, stepDescriptionPos);
-        mExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_ARG);
+        mExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_CONSTANT);
 
         if(mTwoPane) {
             loadViewPagerFragment(mExtras);
@@ -111,14 +114,10 @@ public class StepDescriptionActivity extends AppCompatActivity implements
     public void ingredientsOnclick(View view) {
 
         mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
-        mExtras.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_ARG);
+        mExtras.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_CONSTANT);
 
         if (mTwoPane) {
-            StepViewPagerFragment newFragment = new StepViewPagerFragment();
-            newFragment.setArguments(mExtras);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_instruction_fragment_container, newFragment)
-                    .commit();
+            loadViewPagerFragment(mExtras);
         } else {
 
             startStepInstructionIntent(mExtras);
@@ -126,7 +125,6 @@ public class StepDescriptionActivity extends AppCompatActivity implements
     }
 
     public void loadViewPagerFragment(Bundle extras) {
-
         StepViewPagerFragment newFragment = new StepViewPagerFragment();
         newFragment.setArguments(extras);
         getSupportFragmentManager().beginTransaction()
@@ -134,7 +132,6 @@ public class StepDescriptionActivity extends AppCompatActivity implements
                 .commit();
 
     }
-
 
     public void startStepInstructionIntent(Bundle extras) {
         Intent stepsIntent = new Intent(this, StepInstructionActivity.class);

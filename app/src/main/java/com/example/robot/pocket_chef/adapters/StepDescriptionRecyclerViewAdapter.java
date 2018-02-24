@@ -14,9 +14,7 @@ import java.util.List;
 
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Recipe} and makes a call to the
-
- * TODO: Replace the implementation with code for your data type.
+ * {@link RecyclerView.Adapter} that can display a {@link Recipe}
  */
 public class StepDescriptionRecyclerViewAdapter extends
         RecyclerView.Adapter<StepDescriptionRecyclerViewAdapter.ViewHolder> {

@@ -37,7 +37,9 @@ public class TestData {
                 String recipe1 = "Nutella Pie";
                 List<Step> recipe1steps = Arrays.asList(
                         new Step("Starting prep.", "Preheat the oven to 350\u00b0f. Butter a 9\" deep dish pie pan.", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4", null),
-                        new Step("Prep the cookie crust.", "Whisk the graham cracker crumbs, 50 grams of sugar, and 1/2 teaspoon of salt together in a medium bowl. Pour the melted butter and 1 teaspoon of vanilla into the dry ingredients and stir together until evenly mixed.", null, null)
+                        new Step("Prep the cookie crust.", "Whisk the graham cracker crumbs, 50 grams of sugar, and 1/2 teaspoon of salt together in a medium bowl. Pour the melted butter and 1 teaspoon of vanilla into the dry ingredients and stir together until evenly mixed.", null, null),
+                        new Step("Starting prep.", "Preheat the oven to 350\u00b0f. Butter a 9\" deep dish pie pan.", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4", null),
+                        new Step("Start filling prep", "4. Beat together the nutella, mascarpone, 1 teaspoon of salt, and 1 tablespoon of vanilla on medium speed in a stand mixer or high speed with a hand mixer until fluffy.", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd97a_1-mix-marscapone-nutella-creampie/1-mix-marscapone-nutella-creampie.mp4", null)
                 );
 
                 List<Ingredient> recipe1Ingredients = Arrays.asList(

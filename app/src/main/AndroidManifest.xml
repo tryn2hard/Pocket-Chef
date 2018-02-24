@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name=".activities.StepInstructionActivity"
-            android:parentActivityName=".activities.StepDescriptionActivity">
+            android:parentActivityName=".activities.StepDescriptionActivity"
+            android:configChanges="orientation">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.robot.pocket_chef.activities.StepDescriptionActivity"/>

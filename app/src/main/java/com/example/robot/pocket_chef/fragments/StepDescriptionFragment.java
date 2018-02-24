@@ -68,7 +68,6 @@ public class StepDescriptionFragment extends Fragment implements
             Log.d(TAG, "The value of recipeId is " + mRecipeId);
         }
 
-
     }
 
     @Override
