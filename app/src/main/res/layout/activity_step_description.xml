@@ -5,16 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
 
     <TextView
         android:id="@+id/ingredients_text_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:paddingLeft="16dp"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:text="Ingredients"
+        android:text="@string/ingredients_title"
         android:onClick="ingredientsOnclick"/>
+
+        <CheckBox
+            android:id="@+id/follow_ingredient_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="54dp"
+            android:text="follow ingredient list" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

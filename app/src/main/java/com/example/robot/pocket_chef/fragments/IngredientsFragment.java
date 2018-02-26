@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 
 import com.example.robot.pocket_chef.adapters.IngredientsRecyclerViewAdapter;
@@ -23,6 +27,7 @@ public class IngredientsFragment extends Fragment {
 
     private int mColumnCount = 1;
     private int mRecipeId;
+
 
 
     /**
@@ -45,6 +50,7 @@ public class IngredientsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredients_list, container, false);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {

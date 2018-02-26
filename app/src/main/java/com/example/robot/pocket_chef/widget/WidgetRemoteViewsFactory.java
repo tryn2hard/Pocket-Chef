@@ -1,10 +1,8 @@
 package com.example.robot.pocket_chef.widget;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -12,7 +10,6 @@ import com.example.robot.pocket_chef.R;
 import com.example.robot.pocket_chef.data.TestData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Robot on 2/24/2018.
@@ -20,42 +17,40 @@ import java.util.List;
 
 public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
+    private final static String RECIPE_ID_ARG = "recipeId";
+
     private Context mContext = null;
-    private ArrayList<TestData.Recipe> mCollections = new ArrayList<TestData.Recipe>();
+    private ArrayList<TestData.Ingredient> mCollections = new ArrayList<>();
+    private int mRecipeId;
 
 
     public WidgetRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
+        mRecipeId = intent.getIntExtra(RECIPE_ID_ARG, 0);
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews mView = new RemoteViews(mContext.getPackageName(),
-                R.layout.widget_recipe_name_list_view_single);
-        TestData.Recipe recipe = mCollections.get(position);
-        String recipeName = recipe.recipeName;
+                R.layout.widget_ingredient_list_view_single);
+        mView.setTextViewText(R.id.tv_ingredient_quantity,
+                (String) Double.toString(mCollections.get(position).quantity));
+        mView.setTextViewText(R.id.tv_ingredient_measure,
+                (String) mCollections.get(position).measure);
+        mView.setTextViewText(R.id.tv_ingredient_name,
+                (String) mCollections.get(position).ingredient);
 
-        mView.setTextViewText(R.id.tv_recipe_name, recipeName);
-
-        String ingredientList = "";
-
-        for(int i = 0; i < recipe.ingredients.size(); i++) {
-            double ingredientQuantity = recipe.ingredients.get(i).quantity;
-            String ingredientMeasure = recipe.ingredients.get(i).measure;
-            String ingredient = recipe.ingredients.get(i).ingredient;
-            ingredientList = ingredientList + " " + ingredientQuantity + " " + ingredientMeasure +
-                    " " + ingredient + "\n" + "\n";
-        }
-        mView.setTextViewText(R.id.tv_recipe_ingredients, ingredientList);
-        Log.d("WidgetRemoteViewFactory", ingredientList);
 
         final Intent fillInIntent = new Intent();
-        fillInIntent.setAction(WidgetProvider.ACTION_TOAST);
+        fillInIntent.setAction(WidgetProvider.ACTION_DISPLAY_INGREDIENTS);
         final Bundle bundle = new Bundle();
-        bundle.putString(WidgetProvider.EXTRA_STRING,
-                mCollections.get(position).recipeName);
+        bundle.putString(WidgetProvider.EXTRA_STRING_INGREDIENT,
+                (String) mCollections.get(position).ingredient);
+        bundle.putString(WidgetProvider.EXTRA_STRING_QUANTITY,
+                (String) Double.toString(mCollections.get(position).quantity));
+        bundle.putString(WidgetProvider.EXTRA_STRING_MEASURE,
+                (String) mCollections.get(position).measure);
         fillInIntent.putExtras(bundle);
-        mView.setOnClickFillInIntent(R.id.tv_recipe_name, fillInIntent);
 
         return mView;
     }
@@ -71,7 +66,7 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     }
 
     @Override
-    public void onDestroy() {}
+    public void onDestroy() {mCollections.clear();}
 
     @Override
     public int getCount() {
@@ -100,9 +95,10 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     private void initData(){
         mCollections.clear();
-        for (int i = 0; i < TestData.ITEMS.size(); i++){
-            TestData.Recipe recipe = TestData.ITEMS.get(i);
-            mCollections.add(recipe);
+        for (int i = 0; i < TestData.ITEMS.get(mRecipeId).ingredients.size(); i++){
+            TestData.Recipe recipe = TestData.ITEMS.get(mRecipeId);
+            TestData.Ingredient ingredient = recipe.ingredients.get(i);
+            mCollections.add(ingredient);
         }
     }
 }
