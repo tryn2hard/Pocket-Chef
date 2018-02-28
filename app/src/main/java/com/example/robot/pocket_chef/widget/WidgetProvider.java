@@ -5,11 +5,14 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.example.robot.pocket_chef.R;
+import com.example.robot.pocket_chef.activities.StepDescriptionActivity;
 import com.example.robot.pocket_chef.data.TestData;
 
 /**
@@ -42,10 +45,17 @@ public class WidgetProvider extends AppWidgetProvider {
 
         for (int widgetId : appWidgetIds) {
 
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            if(prefs.contains(RECIPE_ID_ARG)){
+                mRecipeId = prefs.getInt(RECIPE_ID_ARG, -1);
+            }
+
             RemoteViews mView = initViews(context, appWidgetManager, R.layout.widget_pocket_chef);
             mView.setEmptyView(R.id.widgetCollectionList, R.id.empty_view);
+
             if(mRecipeId > -1) {
-                mView.setTextViewText(R.id.tv_recipe_title, TestData.ITEMS.get(mRecipeId).recipeName);
+                mView.setTextViewText(R.id.tv_recipe_title,
+                        TestData.ITEMS.get(mRecipeId).recipeName);
             }
             appWidgetManager.updateAppWidget(widgetId, mView);
         }

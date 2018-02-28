@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -92,7 +93,10 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
         mCheckBox = findViewById(R.id.follow_ingredient_checkBox);
 
-        SharedPreferences prefs = StepDescriptionActivity.this.getPreferences(0);
+
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(StepDescriptionActivity.this);
+
         int checkBoxStatus = prefs.getInt(ARG_RECIPE_ID, -1);
 
         if(checkBoxStatus == -1){
@@ -105,7 +109,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor editor =
-                        StepDescriptionActivity.this.getPreferences(0).edit();
+                        PreferenceManager.getDefaultSharedPreferences(StepDescriptionActivity.this).edit();
 
                 if (isChecked) {
 
@@ -120,6 +124,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
                     editor.commit();
 
                 } else {
+
                     editor.putInt(ARG_RECIPE_ID, -1);
                     editor.commit();
                 }
