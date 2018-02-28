@@ -57,7 +57,7 @@ import com.google.android.exoplayer2.util.Util;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StepInstructionFragment extends Fragment{
+public class StepInstructionFragment extends Fragment {
 
     //String Constants for data storage and retrieval
     private static final String TAG = StepInstructionFragment.class.getSimpleName();
@@ -70,6 +70,7 @@ public class StepInstructionFragment extends Fragment{
     //Member variables related to the recipe
     private int mRecipeId;
     private int mStepDescriptionPos;
+    private static boolean mHasLoadedOnce;
 
     //Member variable related to the fragment view
     private Context mContext;
@@ -106,6 +107,8 @@ public class StepInstructionFragment extends Fragment{
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+            mRecipeId = savedInstanceState.getInt(ARG_RECIPE_ID);
+            mStepDescriptionPos = savedInstanceState.getInt(ARG_DESCRIPTION_POS);
         }
 
         setRetainInstance(true);
@@ -128,30 +131,6 @@ public class StepInstructionFragment extends Fragment{
         initFullscreenDialog(mContext);
         initFullscreenButton();
 
-        mVideoUrlString = TestData.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).videoUrl;
-        DefaultBandwidthMeter bandwidthMeter1 = new DefaultBandwidthMeter();
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, "PocketChef"), bandwidthMeter1);
-        if (mVideoUrlString != null) {
-            Uri mp4VideoUri = Uri.parse(mVideoUrlString);
-            mVideoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);
-            mExoPlayerView.setVisibility(View.VISIBLE);
-            mView.findViewById(R.id.main_media_frame).setVisibility(View.VISIBLE);
-            initExoPlayer();
-
-        } else {
-            mExoPlayerView.setVisibility(View.GONE);
-            mView.findViewById(R.id.main_media_frame).setVisibility(View.GONE);
-        }
-
-        if (mExoPlayerFullscreen) {
-            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
-            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_fullscreen_skrink));
-            mFullScreenDialog.show();
-        }
-
-
         return mView;
     }
 
@@ -164,10 +143,36 @@ public class StepInstructionFragment extends Fragment{
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
+        outState.putInt(ARG_RECIPE_ID, mRecipeId);
+        outState.putInt(ARG_DESCRIPTION_POS, mStepDescriptionPos);
 
         super.onSaveInstanceState(outState);
     }
 
+    // Initialization of the exoplayer
+    private void initExoPlayer() {
+
+        // Standard code to create a simple player to set into mExoPlayerView
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        LoadControl loadControl = new DefaultLoadControl();
+        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(mContext), trackSelector, loadControl);
+        mExoPlayerView.setPlayer(player);
+
+
+        // move the seek bar to a previous position
+        boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
+
+        if (haveResumePosition) {
+            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+        }
+
+        if (mVideoSource != null) {
+            mExoPlayerView.getPlayer().prepare(mVideoSource);
+        }
+
+    }
 
     // Initialization of the full screen dialog which we use to put over the fragment show a full
     // screen video.
@@ -180,6 +185,23 @@ public class StepInstructionFragment extends Fragment{
                 super.onBackPressed();
             }
         };
+    }
+
+    // Initialization of the buttons for full screen mode
+    private void initFullscreenButton() {
+
+        PlaybackControlView controlView = mExoPlayerView.findViewById(R.id.exo_controller);
+        mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
+        mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
+        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mExoPlayerFullscreen)
+                    openFullscreenDialog();
+                else
+                    closeFullscreenDialog();
+            }
+        });
     }
 
     // Showing the full screen view
@@ -204,42 +226,26 @@ public class StepInstructionFragment extends Fragment{
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_fullscreen_expand));
     }
 
-    // Initialization of the buttons for full screen mode
-    private void initFullscreenButton() {
 
-        PlaybackControlView controlView = mExoPlayerView.findViewById(R.id.exo_controller);
-        mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
-        mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mExoPlayerFullscreen)
-                    openFullscreenDialog();
-                else
-                    closeFullscreenDialog();
-            }
-        });
-    }
+    @Override
+    public void onResume() {
+        super.onResume();
 
-    // Initialization of the exoplayer
-    private void initExoPlayer() {
+        Log.d(TAG, "onResume called on " + mStepDescriptionPos);
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        LoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(mContext), trackSelector, loadControl);
-        mExoPlayerView.setPlayer(player);
+        // if mExoPlayerView is null do the following code
+        if (mExoPlayerView != null) {
 
-        boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
-
-        if (haveResumePosition) {
-            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+            generateMediaSource();
         }
 
-        if (mVideoSource != null) {
-            mExoPlayerView.getPlayer().prepare(mVideoSource);
+        if (mExoPlayerFullscreen) {
+            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_fullscreen_skrink));
+            mFullScreenDialog.show();
         }
+
 
     }
 
@@ -247,6 +253,20 @@ public class StepInstructionFragment extends Fragment{
     public void onPause() {
         super.onPause();
 
+        Log.d(TAG, "onPause called on " + mStepDescriptionPos);
+        if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
+            mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
+            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+            mExoPlayerView.getPlayer().release();
+        }
+        if (mFullScreenDialog != null)
+            mFullScreenDialog.dismiss();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach called");
         if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
             mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
             mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
@@ -257,6 +277,28 @@ public class StepInstructionFragment extends Fragment{
             mFullScreenDialog.dismiss();
     }
 
+    private void generateMediaSource(){
+
+        mVideoUrlString = TestData.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).videoUrl;
+
+        if (mVideoUrlString != null) {
+            Uri mp4VideoUri = Uri.parse(mVideoUrlString);
+            DefaultBandwidthMeter bandwidthMeter1 = new DefaultBandwidthMeter();
+            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(mContext,
+                    Util.getUserAgent(mContext, "PocketChef"), bandwidthMeter1);
+            mVideoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory,
+                    extractorsFactory, null, null);
+            mExoPlayerView.setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.main_media_frame).setVisibility(View.VISIBLE);
+            initExoPlayer();
+
+        } else {
+            mExoPlayerView.setVisibility(View.GONE);
+            mView.findViewById(R.id.main_media_frame).setVisibility(View.GONE);
+        }
+
+    }
 
     public static StepInstructionFragment newInstance(int recipeId, int stepDescriptionPos) {
 

@@ -26,31 +26,33 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     public WidgetRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
-        mRecipeId = intent.getIntExtra(RECIPE_ID_ARG, 0);
+        mRecipeId = intent.getIntExtra(RECIPE_ID_ARG, -1);
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews mView = new RemoteViews(mContext.getPackageName(),
                 R.layout.widget_ingredient_list_view_single);
-        mView.setTextViewText(R.id.tv_ingredient_quantity,
-                (String) Double.toString(mCollections.get(position).quantity));
-        mView.setTextViewText(R.id.tv_ingredient_measure,
-                (String) mCollections.get(position).measure);
-        mView.setTextViewText(R.id.tv_ingredient_name,
-                (String) mCollections.get(position).ingredient);
 
+        if(!mCollections.isEmpty()) {
+            mView.setTextViewText(R.id.tv_ingredient_quantity,
+                    (String) Double.toString(mCollections.get(position).quantity));
+            mView.setTextViewText(R.id.tv_ingredient_measure,
+                    (String) mCollections.get(position).measure);
+            mView.setTextViewText(R.id.tv_ingredient_name,
+                    (String) mCollections.get(position).ingredient);
 
-        final Intent fillInIntent = new Intent();
-        fillInIntent.setAction(WidgetProvider.ACTION_DISPLAY_INGREDIENTS);
-        final Bundle bundle = new Bundle();
-        bundle.putString(WidgetProvider.EXTRA_STRING_INGREDIENT,
-                (String) mCollections.get(position).ingredient);
-        bundle.putString(WidgetProvider.EXTRA_STRING_QUANTITY,
-                (String) Double.toString(mCollections.get(position).quantity));
-        bundle.putString(WidgetProvider.EXTRA_STRING_MEASURE,
-                (String) mCollections.get(position).measure);
-        fillInIntent.putExtras(bundle);
+            final Intent fillInIntent = new Intent();
+            fillInIntent.setAction(WidgetProvider.ACTION_DISPLAY_INGREDIENTS);
+            final Bundle bundle = new Bundle();
+            bundle.putString(WidgetProvider.EXTRA_STRING_INGREDIENT,
+                    (String) mCollections.get(position).ingredient);
+            bundle.putString(WidgetProvider.EXTRA_STRING_QUANTITY,
+                    (String) Double.toString(mCollections.get(position).quantity));
+            bundle.putString(WidgetProvider.EXTRA_STRING_MEASURE,
+                    (String) mCollections.get(position).measure);
+            fillInIntent.putExtras(bundle);
+        }
 
         return mView;
     }
@@ -95,10 +97,12 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     private void initData(){
         mCollections.clear();
-        for (int i = 0; i < TestData.ITEMS.get(mRecipeId).ingredients.size(); i++){
-            TestData.Recipe recipe = TestData.ITEMS.get(mRecipeId);
-            TestData.Ingredient ingredient = recipe.ingredients.get(i);
-            mCollections.add(ingredient);
+        if(mRecipeId > -1) {
+            for (int i = 0; i < TestData.ITEMS.get(mRecipeId).ingredients.size(); i++) {
+                TestData.Recipe recipe = TestData.ITEMS.get(mRecipeId);
+                TestData.Ingredient ingredient = recipe.ingredients.get(i);
+                mCollections.add(ingredient);
+            }
         }
     }
 }

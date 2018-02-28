@@ -4,11 +4,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -32,10 +31,10 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
     // Constants
     private final static String TAG = StepDescriptionActivity.class.getSimpleName();
-    private final static String FRAGMENT_SELECTOR_ARG = "fragmentSelector";
+    private final static String ARG_FRAGMENT_SELECTOR = "fragmentSelector";
     private final static int INGREDIENT_SELECTOR_CONSTANT = 1;
     private final static int STEP_INSTRUCTION_SELECTOR_CONSTANT = 0;
-    private final static String RECIPE_ID_ARG = "recipeId";
+    private final static String ARG_RECIPE_ID = "recipeId";
     private final static String DESCRIPTION_POSITION = "descriptionPos";
     private final static int INGREDIENT_OFFSET = 1;
 
@@ -58,10 +57,10 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         mDividerView = findViewById(R.id.divider_view);
 
         if (getIntent() != null) {
-            mRecipeId = getIntent().getIntExtra(RECIPE_ID_ARG, 0);
+            mRecipeId = getIntent().getIntExtra(ARG_RECIPE_ID, 0);
         }
         mExtras = new Bundle();
-        mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
+        mExtras.putInt(ARG_RECIPE_ID, mRecipeId);
 
         StepDescriptionFragment stepDescriptionFragment = new StepDescriptionFragment();
         stepDescriptionFragment.setArguments(mExtras);
@@ -75,9 +74,9 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
             if (savedInstanceState == null) {
 
-                mInitialTwoPaneExtras.putInt(RECIPE_ID_ARG, mRecipeId);
+                mInitialTwoPaneExtras.putInt(ARG_RECIPE_ID, mRecipeId);
                 mInitialTwoPaneExtras.putInt(DESCRIPTION_POSITION, -INGREDIENT_OFFSET);
-                mInitialTwoPaneExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_CONSTANT);
+                mInitialTwoPaneExtras.putInt(ARG_FRAGMENT_SELECTOR, STEP_INSTRUCTION_SELECTOR_CONSTANT);
                 loadViewPagerFragment(mInitialTwoPaneExtras);
             }
         } else {
@@ -93,18 +92,36 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
         mCheckBox = findViewById(R.id.follow_ingredient_checkBox);
 
+        SharedPreferences prefs = StepDescriptionActivity.this.getPreferences(0);
+        int checkBoxStatus = prefs.getInt(ARG_RECIPE_ID, -1);
+
+        if(checkBoxStatus == -1){
+            mCheckBox.setChecked(false);
+        } else if (checkBoxStatus == mRecipeId){
+            mCheckBox.setChecked(true);
+        }
+
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor =
+                        StepDescriptionActivity.this.getPreferences(0).edit();
+
                 if (isChecked) {
 
                     Toast.makeText(StepDescriptionActivity.this,
                             TestData.ITEMS.get(mRecipeId).recipeName +
-                                    " ingredients added to home widget",
+                                    " ingredients list added to home widget",
                             Toast.LENGTH_LONG).show();
 
                     updateIngredientWidget(StepDescriptionActivity.this, mRecipeId);
 
+                    editor.putInt(ARG_RECIPE_ID, mRecipeId);
+                    editor.commit();
+
+                } else {
+                    editor.putInt(ARG_RECIPE_ID, -1);
+                    editor.commit();
                 }
             }
         });
@@ -117,16 +134,16 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         int ids[] = widgetManager.getAppWidgetIds(
                 new ComponentName(context, WidgetProvider.class));
-        widgetIntent.putExtra(RECIPE_ID_ARG, recipeId);
+        widgetIntent.putExtra(ARG_RECIPE_ID, recipeId);
         widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(widgetIntent);
     }
 
     public void onDescriptionSelected(int stepDescriptionPos) {
 
-        mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
+        mExtras.putInt(ARG_RECIPE_ID, mRecipeId);
         mExtras.putInt(DESCRIPTION_POSITION, stepDescriptionPos);
-        mExtras.putInt(FRAGMENT_SELECTOR_ARG, STEP_INSTRUCTION_SELECTOR_CONSTANT);
+        mExtras.putInt(ARG_FRAGMENT_SELECTOR, STEP_INSTRUCTION_SELECTOR_CONSTANT);
 
         if (mTwoPane) {
             loadViewPagerFragment(mExtras);
@@ -150,8 +167,8 @@ public class StepDescriptionActivity extends AppCompatActivity implements
 
     public void ingredientsOnclick(View view) {
 
-        mExtras.putInt(RECIPE_ID_ARG, mRecipeId);
-        mExtras.putInt(FRAGMENT_SELECTOR_ARG, INGREDIENT_SELECTOR_CONSTANT);
+        mExtras.putInt(ARG_RECIPE_ID, mRecipeId);
+        mExtras.putInt(ARG_FRAGMENT_SELECTOR, INGREDIENT_SELECTOR_CONSTANT);
 
         if (mTwoPane) {
             loadViewPagerFragment(mExtras);

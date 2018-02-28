@@ -31,7 +31,7 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){
-            mRecipeId = intent.getIntExtra(RECIPE_ID_ARG, 0);
+            mRecipeId = intent.getIntExtra(RECIPE_ID_ARG, -1);
         }
         super.onReceive(context, intent);
     }
@@ -44,7 +44,9 @@ public class WidgetProvider extends AppWidgetProvider {
 
             RemoteViews mView = initViews(context, appWidgetManager, R.layout.widget_pocket_chef);
             mView.setEmptyView(R.id.widgetCollectionList, R.id.empty_view);
-            mView.setTextViewText(R.id.tv_recipe_title, TestData.ITEMS.get(mRecipeId).recipeName);
+            if(mRecipeId > -1) {
+                mView.setTextViewText(R.id.tv_recipe_title, TestData.ITEMS.get(mRecipeId).recipeName);
+            }
             appWidgetManager.updateAppWidget(widgetId, mView);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
