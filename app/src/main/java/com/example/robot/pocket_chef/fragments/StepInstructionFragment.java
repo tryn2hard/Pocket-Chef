@@ -2,10 +2,8 @@ package com.example.robot.pocket_chef.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -16,41 +14,28 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.activities.StepInstructionActivity;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 
@@ -111,7 +96,7 @@ public class StepInstructionFragment extends Fragment {
             mStepDescriptionPos = savedInstanceState.getInt(ARG_DESCRIPTION_POS);
         }
 
-        setRetainInstance(true);
+        //setRetainInstance(true);
     }
 
     @Override
@@ -124,8 +109,10 @@ public class StepInstructionFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_step_instruction, container, false);
 
         // Add the stepInstruction to the fragment
-        TextView stepInstructionTextView = (TextView) mView.findViewById(R.id.step_instruction_text_view);
-        stepInstructionTextView.setText(TestData.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).description);
+        TextView stepInstructionTextView = (TextView) mView
+                .findViewById(R.id.step_instruction_text_view);
+        stepInstructionTextView.setText(RecipeData.RECIPES.get(mRecipeId)
+                .steps.get(mStepDescriptionPos).description);
 
         mExoPlayerView = mView.findViewById(R.id.player_view);
         initFullscreenDialog(mContext);
@@ -279,9 +266,12 @@ public class StepInstructionFragment extends Fragment {
 
     private void generateMediaSource(){
 
-        mVideoUrlString = TestData.ITEMS.get(mRecipeId).steps.get(mStepDescriptionPos).videoUrl;
+        mVideoUrlString = RecipeData.RECIPES.get(mRecipeId)
+                .steps.get(mStepDescriptionPos).videoURL;
 
-        if (mVideoUrlString != null) {
+        Log.d(TAG,"mVideoUrlString is " + mVideoUrlString);
+
+        if (!mVideoUrlString.equals("")) {
             Uri mp4VideoUri = Uri.parse(mVideoUrlString);
             DefaultBandwidthMeter bandwidthMeter1 = new DefaultBandwidthMeter();
             ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
@@ -294,8 +284,10 @@ public class StepInstructionFragment extends Fragment {
             initExoPlayer();
 
         } else {
+            Log.d(TAG, "Views set to gone");
             mExoPlayerView.setVisibility(View.GONE);
             mView.findViewById(R.id.main_media_frame).setVisibility(View.GONE);
+            mFullScreenDialog.dismiss();
         }
 
     }

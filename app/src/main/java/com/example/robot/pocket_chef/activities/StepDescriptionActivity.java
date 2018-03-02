@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.robot.pocket_chef.R;
 import com.example.robot.pocket_chef.fragments.StepDescriptionFragment;
 import com.example.robot.pocket_chef.fragments.StepViewPagerFragment;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 import com.example.robot.pocket_chef.widget.WidgetProvider;
 
 
@@ -88,7 +88,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(TestData.ITEMS.get(mRecipeId).recipeName);
+            actionBar.setTitle(RecipeData.RECIPES.get(mRecipeId).name);
         }
 
         mCheckBox = findViewById(R.id.follow_ingredient_checkBox);
@@ -114,7 +114,7 @@ public class StepDescriptionActivity extends AppCompatActivity implements
                 if (isChecked) {
 
                     Toast.makeText(StepDescriptionActivity.this,
-                            TestData.ITEMS.get(mRecipeId).recipeName +
+                            RecipeData.RECIPES.get(mRecipeId).name +
                                     " ingredients list added to home widget",
                             Toast.LENGTH_LONG).show();
 

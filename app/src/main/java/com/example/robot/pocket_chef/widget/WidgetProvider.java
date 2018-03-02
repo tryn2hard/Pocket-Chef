@@ -1,6 +1,5 @@
 package com.example.robot.pocket_chef.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -9,11 +8,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.activities.StepDescriptionActivity;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 
 /**
  * Implementation of App Widget functionality.
@@ -55,7 +52,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
             if(mRecipeId > -1) {
                 mView.setTextViewText(R.id.tv_recipe_title,
-                        TestData.ITEMS.get(mRecipeId).recipeName);
+                        RecipeData.RECIPES.get(mRecipeId).name);
             }
             appWidgetManager.updateAppWidget(widgetId, mView);
         }

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.data.TestData;
-import com.example.robot.pocket_chef.data.TestData.Recipe;
+import com.example.robot.pocket_chef.data.RecipeData;
+import com.example.robot.pocket_chef.data.RecipeData.Recipe;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class IngredientsRecyclerViewAdapter extends
         public final TextView mQuantity;
         public final TextView mMeasure;
         public final TextView mIngredient;
-        public TestData.Ingredient mItem;
+        public RecipeData.Ingredient mItem;
 
         public ViewHolder(View view) {
             super(view);

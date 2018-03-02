@@ -5,18 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
 
 import com.example.robot.pocket_chef.adapters.IngredientsRecyclerViewAdapter;
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 
 /**
  * A fragment representing a list of Items.
@@ -59,7 +55,7 @@ public class IngredientsFragment extends Fragment {
 
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(TestData.ITEMS, mRecipeId));
+            recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(RecipeData.RECIPES, mRecipeId));
         }
         return view;
     }

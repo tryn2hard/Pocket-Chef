@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 import com.example.robot.pocket_chef.fragments.StepViewPagerFragment;
 
 /**
@@ -58,7 +58,7 @@ public class StepInstructionActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(TestData.ITEMS.get(getIntent().getIntExtra(ARG_RECIPE_ID, -1)).recipeName);
+            actionBar.setTitle(RecipeData.RECIPES.get(getIntent().getIntExtra(ARG_RECIPE_ID, -1)).name);
         }
     }
 

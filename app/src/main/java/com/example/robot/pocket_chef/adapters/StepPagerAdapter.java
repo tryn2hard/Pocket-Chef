@@ -3,11 +3,8 @@ package com.example.robot.pocket_chef.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
-import android.view.View;
 
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 import com.example.robot.pocket_chef.fragments.IngredientsFragment;
 import com.example.robot.pocket_chef.fragments.StepInstructionFragment;
 
@@ -34,7 +31,9 @@ public class StepPagerAdapter extends FragmentPagerAdapter {
         if(position == 0){
             return IngredientsFragment.newInstance(mRecipeId);
         } else {
-            return StepInstructionFragment.newInstance(mRecipeId, position - INGREDIENT_FRAGMENT_OFFSET);
+            return StepInstructionFragment.newInstance(
+                    mRecipeId,
+                    position - INGREDIENT_FRAGMENT_OFFSET);
         }
     }
 
@@ -43,14 +42,16 @@ public class StepPagerAdapter extends FragmentPagerAdapter {
 
         if(position == 0){
             return "Ingredients";
-        } else {
-            return "Step " + position;
+        } else if (position == 1){
+            return "Introduction" ;
+        } else{
+            return "Step " + (position - 1);
         }
     }
 
     @Override
     public int getCount() {
-        return TestData.ITEMS.get(mRecipeId).steps.size() + INGREDIENT_FRAGMENT_OFFSET;
+        return RecipeData.RECIPES.get(mRecipeId).steps.size() + INGREDIENT_FRAGMENT_OFFSET;
     }
 
 }

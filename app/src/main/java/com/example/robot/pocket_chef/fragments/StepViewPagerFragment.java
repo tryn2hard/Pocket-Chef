@@ -69,7 +69,6 @@ public class StepViewPagerFragment extends Fragment {
 
     }
 
-
     private void offset(int fragmentSelector) {
 
         switch (fragmentSelector) {

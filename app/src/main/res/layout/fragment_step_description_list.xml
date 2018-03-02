@@ -9,7 +9,8 @@
     android:layout_height="wrap_content"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.robot.pocket_chef.fragments.StepDescriptionFragment"
-    tools:listitem="@layout/fragment_step_description" />
+    tools:listitem="@layout/fragment_step_description"
+    android:background="@drawable/grid_color_selector"/>
 
 
 

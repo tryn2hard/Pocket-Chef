@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.robot.pocket_chef.R;
 import com.example.robot.pocket_chef.adapters.StepDescriptionRecyclerViewAdapter;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 
 
 
@@ -82,7 +82,7 @@ public class StepDescriptionFragment extends Fragment implements
 
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            recyclerView.setAdapter(new StepDescriptionRecyclerViewAdapter(TestData.ITEMS, mRecipeId, this));
+            recyclerView.setAdapter(new StepDescriptionRecyclerViewAdapter(RecipeData.RECIPES, mRecipeId, this));
         }
         return view;
     }

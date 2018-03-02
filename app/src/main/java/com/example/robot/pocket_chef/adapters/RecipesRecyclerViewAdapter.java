@@ -5,12 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.data.TestData.Recipe;
+import com.example.robot.pocket_chef.data.RecipeData.Recipe;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Recipe} and makes a call to the
@@ -20,12 +21,12 @@ public class RecipesRecyclerViewAdapter extends
 
     private final static String TAG = RecipesAdapterOnClickHandler.class.getSimpleName();
 
-    private final List<Recipe> mRecipeList;
+    private ArrayList<Recipe> mRecipeList;
 
     private final RecipesAdapterOnClickHandler mClickHandler;
 
 
-    public RecipesRecyclerViewAdapter(List<Recipe> items,
+    public RecipesRecyclerViewAdapter(ArrayList<Recipe> items,
                                       RecipesAdapterOnClickHandler clickHandler) {
         mRecipeList = items;
         mClickHandler = clickHandler;
@@ -47,7 +48,22 @@ public class RecipesRecyclerViewAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mRecipeList.get(position);
-        holder.mRecipeName.setText(mRecipeList.get(position).recipeName);
+        holder.mRecipeName.setText(mRecipeList.get(position).name);
+        switch (position){
+            case 0: holder.mRecipeImageView.setImageResource(R.drawable.nutella_pie);
+            break;
+
+            case 1: holder.mRecipeImageView.setImageResource(R.drawable.brownies);
+            break;
+
+            case 2: holder.mRecipeImageView.setImageResource(R.drawable.yellow_cake);
+            break;
+
+            case 3: holder.mRecipeImageView.setImageResource(R.drawable.cheesecake);
+            break;
+
+            default: holder.mRecipeImageView.setImageResource(R.mipmap.ic_insert_photo_black_48dp);
+        }
 
     }
 
@@ -60,17 +76,14 @@ public class RecipesRecyclerViewAdapter extends
         public final View mView;
         public final TextView mRecipeName;
         public Recipe mItem;
+        public final ImageView mRecipeImageView;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mRecipeName = (TextView) view.findViewById(R.id.recipe_name);
+            mRecipeImageView = (ImageView) view.findViewById(R.id.recipe_image);
             view.setOnClickListener(this);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mRecipeName.getText() + "'";
         }
 
         @Override
@@ -81,5 +94,9 @@ public class RecipesRecyclerViewAdapter extends
             Log.d(TAG, "Adapter position is = " + adapterPosition);
 
         }
+    }
+    public void setRecipeList(ArrayList<Recipe> recipeList){
+        mRecipeList = recipeList;
+        notifyDataSetChanged();
     }
 }

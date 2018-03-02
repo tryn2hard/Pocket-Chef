@@ -5,37 +5,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <View
+        android:id="@+id/divider_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/ingredients_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:paddingLeft="16dp"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:text="@string/ingredients_title"
-        android:onClick="ingredientsOnclick"/>
+        <ImageView
+            android:id="@+id/ingredient_list_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/ingredient_list" />
+
+        <TextView
+            android:id="@+id/ingredients_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ingredient_list_image"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/ingredient_list_image"
+            android:background="@drawable/grid_color_selector"
+            android:onClick="ingredientsOnclick"
+            android:text="@string/ingredients_title"
+            android:textSize="20sp" />
 
         <CheckBox
             android:id="@+id/follow_ingredient_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="54dp"
-            android:text="follow ingredient list" />
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/divider_view"/>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/step_description_fragment_container"

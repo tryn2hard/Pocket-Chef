@@ -7,7 +7,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.data.TestData;
+import com.example.robot.pocket_chef.data.RecipeData;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     private final static String RECIPE_ID_ARG = "recipeId";
 
     private Context mContext = null;
-    private ArrayList<TestData.Ingredient> mCollections = new ArrayList<>();
+    private ArrayList<RecipeData.Ingredient> mCollections = new ArrayList<>();
     private int mRecipeId;
 
 
@@ -98,9 +98,9 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     private void initData(){
         mCollections.clear();
         if(mRecipeId > -1) {
-            for (int i = 0; i < TestData.ITEMS.get(mRecipeId).ingredients.size(); i++) {
-                TestData.Recipe recipe = TestData.ITEMS.get(mRecipeId);
-                TestData.Ingredient ingredient = recipe.ingredients.get(i);
+            for (int i = 0; i < RecipeData.RECIPES.get(mRecipeId).ingredients.size(); i++) {
+                RecipeData.Recipe recipe = RecipeData.RECIPES.get(mRecipeId);
+                RecipeData.Ingredient ingredient = recipe.ingredients.get(i);
                 mCollections.add(ingredient);
             }
         }

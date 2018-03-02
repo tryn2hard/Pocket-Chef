@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.robot.pocket_chef.R;
-import com.example.robot.pocket_chef.data.TestData.Recipe;
+import com.example.robot.pocket_chef.data.RecipeData.Recipe;
 
 import java.util.List;
 
@@ -49,9 +49,12 @@ public class StepDescriptionRecyclerViewAdapter extends
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mRecipes.get(position);
-        holder.mStepNumberView.setText(mRecipes.get(position).id);
-        holder.mStepDescriptionView.setText(mRecipes.get(mRecipeId).steps.get(position).shortDescription);
+        holder.mItem = mRecipes.get(mRecipeId);
+        String id = Integer.toString(mRecipes.get(mRecipeId).steps.get(position).id +1);
+        holder.mStepNumberView.setText(id);
+
+        holder.mStepDescriptionView.setText(
+                mRecipes.get(mRecipeId).steps.get(position).shortDescription);
     }
 
     @Override
