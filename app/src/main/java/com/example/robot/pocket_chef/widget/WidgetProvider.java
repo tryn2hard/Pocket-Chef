@@ -1,5 +1,6 @@
 package com.example.robot.pocket_chef.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -49,6 +50,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
             RemoteViews mView = initViews(context, appWidgetManager, R.layout.widget_pocket_chef);
             mView.setEmptyView(R.id.widgetCollectionList, R.id.empty_view);
+
 
             if(mRecipeId > -1) {
                 mView.setTextViewText(R.id.tv_recipe_title,
