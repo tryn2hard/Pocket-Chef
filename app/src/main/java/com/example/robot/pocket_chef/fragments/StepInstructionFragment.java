@@ -37,6 +37,7 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -51,6 +52,7 @@ public class StepInstructionFragment extends Fragment {
     private static final String STATE_PLAYER_FULLSCREEN = "playerFullscreen";
     private static final String ARG_RECIPE_ID = "recipeId";
     private static final String ARG_DESCRIPTION_POS = "descriptionPos";
+    private static final String STATE_IS_PLAYING = "playState";
 
     //Member variables related to the recipe
     private int mRecipeId;
@@ -61,6 +63,7 @@ public class StepInstructionFragment extends Fragment {
     private Context mContext;
     private View mView;
     private MediaSource mVideoSource;
+    private ImageView mThumbnailImageView;
 
     //Member variables related to Exoplayer
     private SimpleExoPlayerView mExoPlayerView;
@@ -71,6 +74,8 @@ public class StepInstructionFragment extends Fragment {
     private int mResumeWindow;
     private long mResumePosition;
     private String mVideoUrlString;
+    private boolean mPlayState;
+
 
 
     public StepInstructionFragment() {
@@ -94,6 +99,7 @@ public class StepInstructionFragment extends Fragment {
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
             mRecipeId = savedInstanceState.getInt(ARG_RECIPE_ID);
             mStepDescriptionPos = savedInstanceState.getInt(ARG_DESCRIPTION_POS);
+            mPlayState = savedInstanceState.getBoolean(STATE_IS_PLAYING);
         }
 
         //setRetainInstance(true);
@@ -114,24 +120,42 @@ public class StepInstructionFragment extends Fragment {
         stepInstructionTextView.setText(RecipeData.RECIPES.get(mRecipeId)
                 .steps.get(mStepDescriptionPos).description);
 
+        mThumbnailImageView = mView.findViewById(R.id.recipe_thumbnail_image_view);
+
         mExoPlayerView = mView.findViewById(R.id.player_view);
+        checkForThumbnail();
         initFullscreenDialog(mContext);
         initFullscreenButton();
 
         return mView;
     }
 
+    private void checkForThumbnail() {
+        String thumbnailUrl;
+
+        if(RecipeData.RECIPES.get(mRecipeId).steps.get(mStepDescriptionPos).thumbnailURL.length() > 0){
+            thumbnailUrl = RecipeData.RECIPES.get(mRecipeId).steps.get(mStepDescriptionPos).thumbnailURL;
+            Picasso.with(mContext)
+                    .load(thumbnailUrl).into(mThumbnailImageView);
+            mThumbnailImageView.setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.main_media_frame).setVisibility(View.GONE);
+            mExoPlayerView.setVisibility(View.GONE);
+        }
+
+    }
+
     // Save all the member variable states into a bundle to be retrieved when the fragment starts again
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        Log.d(TAG, "onSaveInstanceState called for position " + mStepDescriptionPos);
+        mPlayState = mExoPlayerView.getPlayer().getPlayWhenReady();
 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
         outState.putInt(ARG_RECIPE_ID, mRecipeId);
         outState.putInt(ARG_DESCRIPTION_POS, mStepDescriptionPos);
+        outState.putBoolean(STATE_IS_PLAYING, mPlayState);
 
         super.onSaveInstanceState(outState);
     }
@@ -153,6 +177,11 @@ public class StepInstructionFragment extends Fragment {
 
         if (haveResumePosition) {
             mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+
+        }
+
+        if(mPlayState){
+            mExoPlayerView.getPlayer().setPlayWhenReady(mPlayState);
         }
 
         if (mVideoSource != null) {

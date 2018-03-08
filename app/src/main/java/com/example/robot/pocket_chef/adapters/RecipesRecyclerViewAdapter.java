@@ -1,5 +1,6 @@
 package com.example.robot.pocket_chef.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.robot.pocket_chef.R;
 import com.example.robot.pocket_chef.data.RecipeData.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -49,20 +51,34 @@ public class RecipesRecyclerViewAdapter extends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mRecipeList.get(position);
         holder.mRecipeName.setText(mRecipeList.get(position).name);
-        switch (position){
-            case 0: holder.mRecipeImageView.setImageResource(R.drawable.nutella_pie);
-            break;
+        String imageStringUrl;
 
-            case 1: holder.mRecipeImageView.setImageResource(R.drawable.brownies);
-            break;
+        if (mRecipeList.get(position).image.length() > 0) {
+            imageStringUrl = mRecipeList.get(position).image;
+            Picasso.with(holder.mRecipeImageView.getContext())
+                    .load(imageStringUrl).into(holder.mRecipeImageView);
+        } else {
 
-            case 2: holder.mRecipeImageView.setImageResource(R.drawable.yellow_cake);
-            break;
+            switch (position) {
+                case 0:
+                    holder.mRecipeImageView.setImageResource(R.drawable.nutella_pie);
+                    break;
 
-            case 3: holder.mRecipeImageView.setImageResource(R.drawable.cheesecake);
-            break;
+                case 1:
+                    holder.mRecipeImageView.setImageResource(R.drawable.brownies);
+                    break;
 
-            default: holder.mRecipeImageView.setImageResource(R.mipmap.ic_insert_photo_black_48dp);
+                case 2:
+                    holder.mRecipeImageView.setImageResource(R.drawable.yellow_cake);
+                    break;
+
+                case 3:
+                    holder.mRecipeImageView.setImageResource(R.drawable.cheesecake);
+                    break;
+
+                default:
+                    holder.mRecipeImageView.setImageResource(R.mipmap.ic_insert_photo_black_48dp);
+            }
         }
 
     }
@@ -72,7 +88,7 @@ public class RecipesRecyclerViewAdapter extends
         return mRecipeList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final TextView mRecipeName;
         public Recipe mItem;
@@ -95,7 +111,8 @@ public class RecipesRecyclerViewAdapter extends
 
         }
     }
-    public void setRecipeList(ArrayList<Recipe> recipeList){
+
+    public void setRecipeList(ArrayList<Recipe> recipeList) {
         mRecipeList = recipeList;
         notifyDataSetChanged();
     }

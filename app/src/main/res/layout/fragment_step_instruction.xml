@@ -6,7 +6,7 @@
         android:orientation="vertical"
         tools:context="com.example.robot.pocket_chef.fragments.StepInstructionFragment">
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/main_media_frame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -20,7 +20,13 @@
             android:focusable="true"
             android:gravity="center"/>
 
-        </FrameLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recipe_thumbnail_image_view"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/step_instruction_text_view"
