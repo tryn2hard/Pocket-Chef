@@ -58,7 +58,7 @@ public class StepInstructionFragment extends Fragment {
     //Member variables related to the recipe
     private int mRecipeId;
     private int mStepDescriptionPos;
-    private static boolean mHasLoadedOnce;
+
 
     //Member variable related to the fragment view
     private Context mContext;
@@ -76,8 +76,6 @@ public class StepInstructionFragment extends Fragment {
     private long mResumePosition;
     private String mVideoUrlString;
     private boolean mPlayState;
-
-
 
     public StepInstructionFragment() {
         // Required empty public constructor
@@ -103,7 +101,6 @@ public class StepInstructionFragment extends Fragment {
             mPlayState = savedInstanceState.getBoolean(STATE_IS_PLAYING);
         }
 
-        //setRetainInstance(true);
     }
 
     @Override
@@ -122,7 +119,6 @@ public class StepInstructionFragment extends Fragment {
                 .steps.get(mStepDescriptionPos).description);
 
         mThumbnailImageView = mView.findViewById(R.id.recipe_thumbnail_image_view);
-
         mExoPlayerView = mView.findViewById(R.id.player_view);
         checkForThumbnail();
         initFullscreenDialog(mContext);
@@ -148,8 +144,6 @@ public class StepInstructionFragment extends Fragment {
     // Save all the member variable states into a bundle to be retrieved when the fragment starts again
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
-        mPlayState = mExoPlayerView.getPlayer().getPlayWhenReady();
 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
@@ -178,7 +172,6 @@ public class StepInstructionFragment extends Fragment {
 
         if (haveResumePosition) {
             mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
-
         }
 
         if(mPlayState){
@@ -248,32 +241,26 @@ public class StepInstructionFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Log.d(TAG, "onResume called on " + mStepDescriptionPos);
-
         // if mExoPlayerView is null do the following code
         if (mExoPlayerView != null) {
-
             generateMediaSource();
         }
-
         if (mExoPlayerFullscreen) {
             ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
             mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_fullscreen_skrink));
             mFullScreenDialog.show();
         }
-
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        Log.d(TAG, "onPause called on " + mStepDescriptionPos);
         if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
             mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
             mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+            mPlayState = mExoPlayerView.getPlayer().getPlayWhenReady();
             mExoPlayerView.getPlayer().release();
         }
         if (mFullScreenDialog != null)

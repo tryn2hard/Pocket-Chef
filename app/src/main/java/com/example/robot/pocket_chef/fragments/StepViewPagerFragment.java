@@ -91,8 +91,8 @@ public class StepViewPagerFragment extends Fragment {
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Fragment page = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.step_viewpager + ":" + mPager.getCurrentItem());
-            Log.d("ViewPager", "View pager position " + mPager.getCurrentItem());
+            Fragment page = getChildFragmentManager().findFragmentByTag("android:switcher:"
+                    + R.id.step_viewpager + ":" + mPager.getCurrentItem());
 
             if (page instanceof StepInstructionFragment) {
                 StepInstructionFragment currentFrag = (StepInstructionFragment) page;
