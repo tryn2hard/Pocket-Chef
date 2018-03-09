@@ -2,6 +2,7 @@ package com.example.robot.pocket_chef.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +29,18 @@ public class StepDescriptionFragment extends Fragment implements
 
     private static final String ARG_RECIPE_ID = "recipeId";
     private static final String TAG = StepDescriptionFragment.class.getSimpleName();
+    private static final String LAYOUT_STATE = "layoutState" ;
 
-    private int mColumnCount = 1;
 
     private int mRecipeId;
+
+    private LinearLayoutManager mLinearLayoutManager;
+
+    private View mRootView;
+
+    private RecyclerView mRecyclerView;
+
+    private Parcelable mListState;
 
     OnDescriptionClickListener mDescriptionCallback;
 
@@ -66,6 +75,13 @@ public class StepDescriptionFragment extends Fragment implements
         if (getArguments() != null) {
             mRecipeId = getArguments().getInt(ARG_RECIPE_ID);
             Log.d(TAG, "The value of recipeId is " + mRecipeId);
+
+        }
+
+        if(savedInstanceState != null) {
+            Log.d("SavedInstanceState", "SavedInstanceState has been called");
+            mListState = savedInstanceState.getParcelable(LAYOUT_STATE);
+
         }
 
     }
@@ -73,18 +89,22 @@ public class StepDescriptionFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_step_description_list, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_step_description_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+        if (mRootView instanceof RecyclerView) {
+            Context context = mRootView.getContext();
+            mRecyclerView = (RecyclerView) mRootView;
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mLinearLayoutManager = (new LinearLayoutManager(context));
 
-            recyclerView.setAdapter(new StepDescriptionRecyclerViewAdapter(RecipeData.RECIPES, mRecipeId, this));
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+            mRecyclerView.setAdapter(new StepDescriptionRecyclerViewAdapter(RecipeData.RECIPES, mRecipeId, this));
+
         }
-        return view;
+
+        return mRootView;
     }
 
     @Override
@@ -92,5 +112,23 @@ public class StepDescriptionFragment extends Fragment implements
         mDescriptionCallback.onDescriptionSelected(stepDescriptionPos);
     }
 
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+            mListState = savedInstanceState.getParcelable(LAYOUT_STATE);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(LAYOUT_STATE, mLinearLayoutManager.onSaveInstanceState());
+
+    }
 
 }

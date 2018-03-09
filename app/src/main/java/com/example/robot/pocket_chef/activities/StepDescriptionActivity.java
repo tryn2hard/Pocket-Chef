@@ -38,11 +38,14 @@ public class StepDescriptionActivity extends AppCompatActivity implements
     private final static String ARG_RECIPE_ID = "recipeId";
     private final static String DESCRIPTION_POSITION = "descriptionPos";
     private final static int INGREDIENT_OFFSET = 1;
+    private static final String DESCRIPTION_FRAGMENT_HAS_LOADED_ONCE
+            = "descriptionFragmentHasLoadedOnce";
 
     // Member variables
     private boolean mTwoPane;
     private int mRecipeId;
     private Bundle mExtras;
+    private boolean mHasLoadedOnce;
 
     // Views
     private TextView mIngredientsView;
@@ -63,10 +66,19 @@ public class StepDescriptionActivity extends AppCompatActivity implements
         mExtras = new Bundle();
         mExtras.putInt(ARG_RECIPE_ID, mRecipeId);
 
-        StepDescriptionFragment stepDescriptionFragment = new StepDescriptionFragment();
-        stepDescriptionFragment.setArguments(mExtras);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.step_description_fragment_container, stepDescriptionFragment).commit();
+        mHasLoadedOnce = false;
+
+        if(savedInstanceState != null){
+            mHasLoadedOnce = savedInstanceState.getBoolean(DESCRIPTION_FRAGMENT_HAS_LOADED_ONCE);
+        }
+
+        if(!mHasLoadedOnce) {
+            StepDescriptionFragment stepDescriptionFragment = new StepDescriptionFragment();
+            stepDescriptionFragment.setArguments(mExtras);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.step_description_fragment_container, stepDescriptionFragment).commit();
+            mHasLoadedOnce = true;
+        }
 
         // Check to see if the user is using a tablet
         if (findViewById(R.id.pocket_chef_linear_layout) != null) {
@@ -156,6 +168,12 @@ public class StepDescriptionActivity extends AppCompatActivity implements
             startStepInstructionIntent(mExtras);
         }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(DESCRIPTION_FRAGMENT_HAS_LOADED_ONCE, mHasLoadedOnce);
     }
 
     @Override
